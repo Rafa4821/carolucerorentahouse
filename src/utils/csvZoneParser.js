@@ -43,8 +43,8 @@ const parseCSVLine = (line) => {
   return result
 }
 
-export const validatePropertyCSV = (data) => {
-  const requiredFields = ['title', 'type', 'operation', 'city', 'zone', 'price', 'flexCode']
+export const validateZoneCSV = (data) => {
+  const requiredFields = ['name', 'avgPriceM2']
   const errors = []
 
   data.forEach((row, index) => {
@@ -54,8 +54,12 @@ export const validatePropertyCSV = (data) => {
       }
     })
 
-    if (row.price && isNaN(Number(row.price))) {
-      errors.push(`Fila ${index + 2}: El precio debe ser un número válido`)
+    if (row.avgPriceM2 && isNaN(Number(row.avgPriceM2))) {
+      errors.push(`Fila ${index + 2}: El valor por M² debe ser un número válido`)
+    }
+
+    if (row.avgPriceM2 && Number(row.avgPriceM2) <= 0) {
+      errors.push(`Fila ${index + 2}: El valor por M² debe ser mayor a 0`)
     }
   })
 
@@ -65,80 +69,56 @@ export const validatePropertyCSV = (data) => {
   }
 }
 
-export const convertCSVToProperties = (csvData) => {
+export const convertCSVToZones = (csvData) => {
   return csvData.map(row => ({
-    title: row.title || '',
-    type: row.type || 'CASA',
-    operation: row.operation || 'VENTA',
-    city: row.city || '',
-    zone: row.zone || '',
-    price: Number(row.price) || 0,
-    bedrooms: row.bedrooms ? Number(row.bedrooms) : 0,
-    bathrooms: row.bathrooms ? Number(row.bathrooms) : 0,
-    parkingSpaces: row.parkingSpaces ? Number(row.parkingSpaces) : 0,
-    m2: row.m2 ? Number(row.m2) : 0,
-    yearBuilt: row.yearBuilt ? Number(row.yearBuilt) : null,
+    name: row.name || '',
+    avgPriceM2: Number(row.avgPriceM2) || 0,
     description: row.description || '',
-    code: row.code || `PROP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    flexCode: row.flexCode || '',
-    images: [],
-    status: 'DISPONIBLE',
-    featured: false,
     createdAt: new Date().toISOString()
   }))
 }
 
-export const generateCSVTemplate = () => {
+export const generateZoneCSVTemplate = () => {
   const headers = [
-    'title',
-    'type',
-    'operation',
-    'city',
-    'zone',
-    'price',
-    'bedrooms',
-    'bathrooms',
-    'parkingSpaces',
-    'm2',
-    'yearBuilt',
-    'description',
-    'code',
-    'flexCode'
+    'name',
+    'avgPriceM2',
+    'description'
   ]
 
-  const example = [
-    'Casa en Altamira',
-    'CASA',
-    'VENTA',
-    'Caracas',
-    'Altamira',
-    '350000',
-    '4',
-    '3',
-    '2',
-    '250',
-    '2020',
-    'Hermosa casa con jardín y piscina',
-    'PROP-001',
-    'FLEX-12345'
+  const examples = [
+    [
+      'Las Condes',
+      '4500',
+      'Zona premium con alta plusvalía'
+    ],
+    [
+      'Providencia',
+      '4200',
+      'Sector céntrico y comercial'
+    ],
+    [
+      'Ñuñoa',
+      '3800',
+      'Zona residencial con buena conectividad'
+    ]
   ]
 
   const csv = [
     headers.join(','),
-    example.join(',')
+    ...examples.map(ex => ex.join(','))
   ].join('\n')
 
   return csv
 }
 
-export const downloadCSVTemplate = () => {
-  const csv = generateCSVTemplate()
+export const downloadZoneCSVTemplate = () => {
+  const csv = generateZoneCSVTemplate()
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const link = document.createElement('a')
   const url = URL.createObjectURL(blob)
   
   link.setAttribute('href', url)
-  link.setAttribute('download', 'plantilla_propiedades.csv')
+  link.setAttribute('download', 'plantilla_zonas.csv')
   link.style.visibility = 'hidden'
   
   document.body.appendChild(link)

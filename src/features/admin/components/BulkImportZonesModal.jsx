@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Modal, Button, Form, Alert, ProgressBar, ListGroup, Badge } from 'react-bootstrap'
 import { FiUpload, FiDownload, FiCheck, FiX, FiAlertCircle } from 'react-icons/fi'
-import { readCSVFile, validatePropertyCSV, convertCSVToProperties, downloadCSVTemplate } from '../../../utils/csvParser'
-import { propertyService } from '../../properties/services/propertyService'
+import { readCSVFile, validateZoneCSV, convertCSVToZones, downloadZoneCSVTemplate } from '../../../utils/csvZoneParser'
+import { zoneService } from '../../zones/services/zoneService'
 
-function BulkImportModal({ show, onHide, onSuccess }) {
+function BulkImportZonesModal({ show, onHide, onSuccess }) {
   const [file, setFile] = useState(null)
   const [importing, setImporting] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -39,7 +39,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
       setProgress(20)
 
       // Validate CSV data
-      const validation = validatePropertyCSV(csvData)
+      const validation = validateZoneCSV(csvData)
       if (!validation.valid) {
         setError(
           <div>
@@ -56,31 +56,31 @@ function BulkImportModal({ show, onHide, onSuccess }) {
       }
       setProgress(30)
 
-      // Convert CSV to property objects
-      const properties = convertCSVToProperties(csvData)
+      // Convert CSV to zone objects
+      const zones = convertCSVToZones(csvData)
       setProgress(40)
 
-      // Import properties to Firestore
+      // Import zones to Firestore
       const importResults = {
-        total: properties.length,
+        total: zones.length,
         success: 0,
         failed: 0,
         errors: []
       }
 
-      for (let i = 0; i < properties.length; i++) {
+      for (let i = 0; i < zones.length; i++) {
         try {
-          await propertyService.create(properties[i])
+          await zoneService.create(zones[i])
           importResults.success++
         } catch (err) {
           importResults.failed++
           importResults.errors.push({
             row: i + 2,
-            title: properties[i].title,
+            name: zones[i].name,
             error: err.message
           })
         }
-        setProgress(40 + ((i + 1) / properties.length) * 60)
+        setProgress(40 + ((i + 1) / zones.length) * 60)
       }
 
       setResults(importResults)
@@ -93,7 +93,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
         }, 2000)
       }
     } catch (err) {
-      setError(err.message || 'Error al importar propiedades')
+      setError(err.message || 'Error al importar zonas')
       console.error('Import error:', err)
     } finally {
       setImporting(false)
@@ -113,7 +113,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
       <Modal.Header closeButton>
         <Modal.Title>
           <FiUpload className="me-2" />
-          Importación Masiva de Propiedades
+          Importación Masiva de Zonas (Valor M²)
         </Modal.Title>
       </Modal.Header>
 
@@ -123,26 +123,27 @@ function BulkImportModal({ show, onHide, onSuccess }) {
           <strong>Cómo usar la importación masiva:</strong>
           <ol className="mb-0 mt-2">
             <li>Descarga la plantilla CSV haciendo clic en el botón de abajo</li>
-            <li>Completa la información de tus propiedades en el archivo</li>
+            <li>Completa la información de las zonas en el archivo</li>
+            <li>Los campos obligatorios son: <strong>name</strong> y <strong>avgPriceM2</strong></li>
+            <li>El campo <strong>description</strong> es opcional</li>
             <li>Sube el archivo CSV completo</li>
-            <li>Las propiedades se crearán sin imágenes</li>
-            <li>Agrega las imágenes manualmente desde "Editar" de cada propiedad</li>
+            <li>Las zonas se crearán automáticamente</li>
           </ol>
         </Alert>
 
         <div className="mb-4">
           <Button
             variant="outline-primary"
-            onClick={downloadCSVTemplate}
+            onClick={downloadZoneCSVTemplate}
             className="w-100"
           >
             <FiDownload className="me-2" />
-            Descargar Plantilla CSV
+            Descargar Plantilla CSV con Ejemplos
           </Button>
         </div>
 
         <Form.Group className="mb-3">
-          <Form.Label>Archivo CSV con Propiedades</Form.Label>
+          <Form.Label>Archivo CSV con Zonas</Form.Label>
           <Form.Control
             type="file"
             accept=".csv"
@@ -167,7 +168,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
         {importing && (
           <div className="mb-3">
             <div className="d-flex justify-content-between mb-2">
-              <span>Importando propiedades...</span>
+              <span>Importando zonas...</span>
               <span>{Math.round(progress)}%</span>
             </div>
             <ProgressBar now={progress} animated striped />
@@ -179,7 +180,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
             <h6 className="mb-3">Resultado de la Importación</h6>
             <ListGroup variant="flush">
               <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                Total de propiedades procesadas
+                Total de zonas procesadas
                 <Badge bg="primary">{results.total}</Badge>
               </ListGroup.Item>
               <ListGroup.Item className="d-flex justify-content-between align-items-center">
@@ -200,7 +201,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
                 <ul className="mb-0 mt-2">
                   {results.errors.map((err, i) => (
                     <li key={i}>
-                      Fila {err.row} ({err.title}): {err.error}
+                      Fila {err.row} ({err.name}): {err.error}
                     </li>
                   ))}
                 </ul>
@@ -212,7 +213,7 @@ function BulkImportModal({ show, onHide, onSuccess }) {
                 <FiCheck size={24} className="text-success me-2" />
                 <strong>¡Importación completada con éxito!</strong>
                 <p className="mb-0 mt-2">
-                  Ahora puedes agregar imágenes a cada propiedad desde la sección de edición.
+                  Todas las zonas han sido agregadas correctamente.
                 </p>
               </div>
             )}
@@ -229,11 +230,11 @@ function BulkImportModal({ show, onHide, onSuccess }) {
           onClick={handleImport}
           disabled={!file || importing || results?.failed === 0}
         >
-          {importing ? 'Importando...' : 'Importar Propiedades'}
+          {importing ? 'Importando...' : 'Importar Zonas'}
         </Button>
       </Modal.Footer>
     </Modal>
   )
 }
 
-export default BulkImportModal
+export default BulkImportZonesModal

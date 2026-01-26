@@ -1,15 +1,29 @@
 import { Container, Row, Col, Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FiSearch, FiHome, FiDollarSign, FiAward } from 'react-icons/fi'
+import { FiSearch, FiHome, FiDollarSign, FiAward, FiArrowRight } from 'react-icons/fi'
 import SEO from '../../../layout/components/SEO'
 import { motion } from 'framer-motion'
 import FadeIn from '../../../layout/components/FadeIn'
-import SlideIn from '../../../layout/components/SlideIn'
-import GridTest from '../../../shared/components/GridTest'
-import FirebaseTest from '../../../shared/components/FirebaseTest'
+import PropertyCard from '../components/PropertyCard'
+import BlogCard from '../../blog/components/BlogCard'
+import LoadingSpinner from '../../../layout/components/LoadingSpinner'
+import { useProperties } from '../hooks/useProperties'
+import { useBlogPosts } from '../../blog/hooks/useBlog'
 import './HomePage.css'
 
 function HomePage() {
+  const { properties, loading: propertiesLoading } = useProperties()
+  const { posts, loading: postsLoading } = useBlogPosts()
+
+  // Obtener últimas 3 propiedades (ordenadas por fecha de creación)
+  const featuredProperties = properties
+    .sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds)
+    .slice(0, 3)
+
+  // Obtener últimos 3 posts del blog (ordenados por fecha de creación)
+  const featuredPosts = posts
+    .sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds)
+    .slice(0, 3)
   return (
     <>
       <SEO 
@@ -204,11 +218,89 @@ function HomePage() {
         </Container>
       </section>
 
+      <section className="py-5">
+        <Container>
+          <Row className="text-center mb-5">
+            <Col>
+              <h2 className="section-title">Propiedades Destacadas</h2>
+              <p className="lead text-muted">Descubre nuestras últimas propiedades disponibles</p>
+            </Col>
+          </Row>
+
+          {propertiesLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Row className="g-4">
+                {featuredProperties.map((property, index) => (
+                  <Col key={property.id} xs={12} md={6} lg={4}>
+                    <FadeIn delay={0.1 * (index + 1)}>
+                      <PropertyCard property={property} />
+                    </FadeIn>
+                  </Col>
+                ))}
+              </Row>
+              
+              <Row className="mt-4">
+                <Col className="text-center">
+                  <Button 
+                    as={Link} 
+                    to="/propiedades" 
+                    variant="primary" 
+                    size="lg"
+                    className="px-5"
+                  >
+                    Ver Todas las Propiedades
+                    <FiArrowRight className="ms-2" />
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+        </Container>
+      </section>
+
       <section className="py-5 bg-light">
         <Container>
-          <h3 className="mb-4">🔧 Verificaciones de Sistema</h3>
-          <FirebaseTest />
-          <GridTest />
+          <Row className="text-center mb-5">
+            <Col>
+              <h2 className="section-title">Últimas Noticias</h2>
+              <p className="lead text-muted">Mantente informado sobre el mercado inmobiliario</p>
+            </Col>
+          </Row>
+
+          {postsLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Row className="g-4">
+                {featuredPosts.map((post, index) => (
+                  <Col key={post.id} xs={12} md={6} lg={4}>
+                    <FadeIn delay={0.1 * (index + 1)}>
+                      <BlogCard post={post} />
+                    </FadeIn>
+                  </Col>
+                ))}
+              </Row>
+              
+              {featuredPosts.length > 0 && (
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button 
+                      as={Link} 
+                      to="/blog" 
+                      variant="primary" 
+                      size="lg"
+                      className="px-5"
+                    >
+                      Ver Todos los Artículos
+                      <FiArrowRight className="ms-2" />
+                    </Button>
+                  </Col>
+                </Row>
+              )}
+            </>
+          )}
         </Container>
       </section>
     </>

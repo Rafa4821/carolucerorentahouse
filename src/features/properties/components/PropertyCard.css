@@ -1,5 +1,5 @@
 .property-card {
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--color-gray-lighter);
   transition: var(--transition-normal);
   cursor: pointer;
 }
@@ -53,7 +53,7 @@
 }
 
 .property-card-location {
-  color: var(--color-gray-600);
+  color: var(--color-gray);
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -63,22 +63,22 @@
   display: flex;
   gap: var(--spacing-lg);
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-gray-200);
+  border-top: 1px solid var(--color-gray-lighter);
 }
 
 .feature-item {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  color: var(--color-gray-700);
+  color: var(--color-gray-dark);
   font-size: 0.9rem;
 }
 
 .property-card-code {
   font-size: 0.8rem;
-  color: var(--color-gray-500);
+  color: var(--color-gray);
   padding-top: var(--spacing-sm);
-  border-top: 1px solid var(--color-gray-200);
+  border-top: 1px solid var(--color-gray-lighter);
 }
 
 @media (max-width: 768px) {

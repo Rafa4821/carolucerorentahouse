@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Badge, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2, FiImage, FiX, FiUpload } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiImage, FiX, FiUpload, FiExternalLink } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 import { propertyService } from '../../properties/services/propertyService'
 import { storageService } from '../../../services/storageService'
 import { PROPERTY_TYPES, OPERATION_TYPES, REGIONS } from '../../../utils/constants'
@@ -29,10 +30,13 @@ function ManagePropertiesPage() {
     price: '',
     bedrooms: '',
     bathrooms: '',
+    parkingSpaces: '',
     m2: '',
+    yearBuilt: '',
     description: '',
     images: [],
-    code: ''
+    code: '',
+    flexCode: ''
   })
 
   useEffect(() => {
@@ -63,10 +67,13 @@ function ManagePropertiesPage() {
         price: property.price,
         bedrooms: property.bedrooms || '',
         bathrooms: property.bathrooms || '',
+        parkingSpaces: property.parkingSpaces || '',
         m2: property.m2 || '',
+        yearBuilt: property.yearBuilt || '',
         description: property.description,
         images: property.images || [],
-        code: property.code
+        code: property.code,
+        flexCode: property.flexCode || ''
       })
       setImagePreviews(property.images || [])
     } else {
@@ -80,10 +87,13 @@ function ManagePropertiesPage() {
         price: '',
         bedrooms: '',
         bathrooms: '',
+        parkingSpaces: '',
         m2: '',
+        yearBuilt: '',
         description: '',
         images: [],
-        code: propertyService.generateCode()
+        code: propertyService.generateCode(),
+        flexCode: ''
       })
       setImagePreviews([])
     }
@@ -146,7 +156,9 @@ function ManagePropertiesPage() {
         price: Number(formData.price),
         bedrooms: formData.bedrooms ? Number(formData.bedrooms) : 0,
         bathrooms: formData.bathrooms ? Number(formData.bathrooms) : 0,
-        m2: formData.m2 ? Number(formData.m2) : 0
+        parkingSpaces: formData.parkingSpaces ? Number(formData.parkingSpaces) : 0,
+        m2: formData.m2 ? Number(formData.m2) : 0,
+        yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : null
       }
 
       if (editingProperty) {
@@ -217,7 +229,7 @@ function ManagePropertiesPage() {
                   <th>Ubicación</th>
                   <th>Precio</th>
                   <th>Fecha</th>
-                  <th>Acciones</th>
+                  <th style={{ width: '200px' }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -232,28 +244,40 @@ function ManagePropertiesPage() {
                       <td className="text-primary fw-bold">{formatPrice(property.price)}</td>
                       <td>{formatDate(property.createdAt)}</td>
                       <td>
-                        <Button 
-                          variant="outline-primary" 
-                          size="sm" 
-                          className="me-2"
-                          onClick={() => handleShowModal(property)}
-                        >
-                          <FiEdit2 />
-                        </Button>
-                        <Button 
-                          variant="outline-danger" 
-                          size="sm"
-                          onClick={() => handleDelete(property.id)}
-                        >
-                          <FiTrash2 />
-                        </Button>
+                        <div className="d-flex gap-1">
+                          <Button 
+                            as={Link}
+                            to={`/propiedades/${property.id}`}
+                            variant="outline-success" 
+                            size="sm"
+                            title="Ver en sitio"
+                          >
+                            <FiExternalLink />
+                          </Button>
+                          <Button 
+                            variant="outline-primary" 
+                            size="sm"
+                            onClick={() => handleShowModal(property)}
+                            title="Editar"
+                          >
+                            <FiEdit2 />
+                          </Button>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm"
+                            onClick={() => handleDelete(property.id)}
+                            title="Eliminar"
+                          >
+                            <FiTrash2 />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
                     <td colSpan="8" className="text-center py-4 text-muted">
-                      No hay propiedades registradas
+                      No hay propiedades registradas. <Link to="/propiedades">Ver todas las propiedades del sitio</Link>
                     </td>
                   </tr>
                 )}
@@ -404,6 +428,19 @@ function ManagePropertiesPage() {
 
                 <Col md={2}>
                   <Form.Group>
+                    <Form.Label>Estac.</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="parkingSpaces"
+                      value={formData.parkingSpaces}
+                      onChange={handleInputChange}
+                      min="0"
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Form.Group>
                     <Form.Label>m²</Form.Label>
                     <Form.Control
                       type="number"
@@ -412,6 +449,38 @@ function ManagePropertiesPage() {
                       onChange={handleInputChange}
                       min="0"
                     />
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Form.Group>
+                    <Form.Label>Año Construcción</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="yearBuilt"
+                      value={formData.yearBuilt}
+                      onChange={handleInputChange}
+                      min="1900"
+                      max={new Date().getFullYear()}
+                      placeholder="Ej: 2020"
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label>Código Flex (ID del inmueble) *</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="flexCode"
+                      value={formData.flexCode}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Ej: FLEX-12345"
+                    />
+                    <Form.Text className="text-muted">
+                      Este es el identificador del inmueble en tu base de datos externa
+                    </Form.Text>
                   </Form.Group>
                 </Col>
 

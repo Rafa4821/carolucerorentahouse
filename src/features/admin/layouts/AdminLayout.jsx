@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
-import { Container, Navbar, Nav, Button } from 'react-bootstrap'
-import { FiHome, FiGrid, FiEdit3, FiLogOut } from 'react-icons/fi'
+import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap'
+import { FiHome, FiGrid, FiEdit3, FiLogOut, FiExternalLink, FiEye } from 'react-icons/fi'
 import { useAuth } from '../../auth/context/AuthContext'
 import './AdminLayout.css'
 
@@ -37,6 +37,37 @@ function AdminLayout() {
               <FiEdit3 className="me-2" />
               Blog
             </Nav.Link>
+            
+            <Dropdown align="end">
+              <Dropdown.Toggle variant="light" size="sm">
+                <FiEye className="me-2" />
+                Ver Sitio
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item as={Link} to="/">
+                  <FiHome className="me-2" />
+                  Ir al Inicio
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/propiedades">
+                  <FiGrid className="me-2" />
+                  Ver Propiedades
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/blog">
+                  <FiEdit3 className="me-2" />
+                  Ver Blog
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item 
+                  href="/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <FiExternalLink className="me-2" />
+                  Abrir en nueva pestaña
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+
             <Button variant="outline-light" size="sm" onClick={handleLogout}>
               <FiLogOut className="me-2" />
               Salir

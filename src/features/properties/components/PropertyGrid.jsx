@@ -17,7 +17,7 @@ function PropertyGrid({ properties, loading, error }) {
 
   if (!properties || properties.length === 0) {
     return (
-      <Alert variant="info">
+      <Alert variant="light" className="border-primary">
         No se encontraron propiedades con los filtros seleccionados.
       </Alert>
     )

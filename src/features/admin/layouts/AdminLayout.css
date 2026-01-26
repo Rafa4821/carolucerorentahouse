@@ -1,6 +1,6 @@
 .admin-layout {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--color-gray-lightest);
 }
 
 .admin-content {

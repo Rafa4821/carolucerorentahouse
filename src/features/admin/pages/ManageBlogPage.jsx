@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Badge, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2, FiImage } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiImage, FiExternalLink } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 import { blogService } from '../../blog/services/blogService'
 import { storageService } from '../../../services/storageService'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
@@ -177,7 +178,7 @@ function ManageBlogPage() {
                   <th>Título</th>
                   <th>Estado</th>
                   <th>Fecha</th>
-                  <th>Acciones</th>
+                  <th style={{ width: '180px' }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -198,29 +199,33 @@ function ManageBlogPage() {
                       </td>
                       <td>{formatDate(post.createdAt)}</td>
                       <td>
-                        <Button 
-                          variant="outline-primary" 
-                          size="sm" 
-                          className="me-2"
-                          onClick={() => handleShowModal(post)}
-                        >
-                          <FiEdit2 />
-                        </Button>
-                        <Button 
-                          variant={post.published ? 'outline-secondary' : 'outline-success'}
-                          size="sm" 
-                          className="me-2"
-                          onClick={() => handleTogglePublish(post)}
-                        >
-                          {post.published ? 'Ocultar' : 'Publicar'}
-                        </Button>
-                        <Button 
-                          variant="outline-danger" 
-                          size="sm"
-                          onClick={() => handleDelete(post.id)}
-                        >
-                          <FiTrash2 />
-                        </Button>
+                        <div className="d-flex gap-1">
+                          <Button 
+                            as={Link}
+                            to={`/blog/${post.slug}`}
+                            variant="outline-success" 
+                            size="sm"
+                            title="Ver en sitio"
+                          >
+                            <FiExternalLink />
+                          </Button>
+                          <Button 
+                            variant="outline-primary" 
+                            size="sm"
+                            onClick={() => handleShowModal(post)}
+                            title="Editar"
+                          >
+                            <FiEdit2 />
+                          </Button>
+                          <Button 
+                            variant="outline-danger" 
+                            size="sm"
+                            onClick={() => handleDelete(post.id)}
+                            title="Eliminar"
+                          >
+                            <FiTrash2 />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))

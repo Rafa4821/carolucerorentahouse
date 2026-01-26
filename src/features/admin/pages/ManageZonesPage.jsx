@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiUpload } from 'react-icons/fi'
 import { zoneService } from '../../zones/services/zoneService'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
 import { formatPrice } from '../../../utils/formatters'
+import BulkImportZonesModal from '../components/BulkImportZonesModal'
 
 function ManageZonesPage() {
   const [zones, setZones] = useState([])
@@ -13,6 +14,7 @@ function ManageZonesPage() {
   const [editingZone, setEditingZone] = useState(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
+  const [showBulkImport, setShowBulkImport] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -123,10 +125,16 @@ function ManageZonesPage() {
       <div>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="mb-0">Gestionar Zonas (Valor M²)</h1>
-          <Button variant="info" onClick={() => handleShowModal()}>
-            <FiPlus className="me-2" />
-            Nueva Zona
-          </Button>
+          <div className="d-flex gap-2">
+            <Button variant="outline-primary" onClick={() => setShowBulkImport(true)}>
+              <FiUpload className="me-2" />
+              Importación Masiva
+            </Button>
+            <Button variant="primary" onClick={() => handleShowModal()}>
+              <FiPlus className="me-2" />
+              Nueva Zona
+            </Button>
+          </div>
         </div>
 
         {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
@@ -244,12 +252,18 @@ function ManageZonesPage() {
               <Button variant="secondary" onClick={handleCloseModal}>
                 Cancelar
               </Button>
-              <Button variant="info" type="submit" disabled={submitting}>
+              <Button variant="primary" type="submit" disabled={submitting}>
                 {submitting ? 'Guardando...' : editingZone ? 'Actualizar' : 'Crear'}
               </Button>
             </Modal.Footer>
           </Form>
         </Modal>
+
+        <BulkImportZonesModal
+          show={showBulkImport}
+          onHide={() => setShowBulkImport(false)}
+          onSuccess={loadZones}
+        />
       </div>
     </>
   )

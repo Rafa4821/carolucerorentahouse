@@ -1,5 +1,5 @@
 .blog-card {
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--color-gray-lighter);
   transition: var(--transition-normal);
   cursor: pointer;
   overflow: hidden;
@@ -38,7 +38,7 @@
 .blog-card-meta {
   display: flex;
   gap: var(--spacing-lg);
-  color: var(--color-gray-600);
+  color: var(--color-gray);
   font-size: 0.85rem;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .blog-card-excerpt {
-  color: var(--color-gray-700);
+  color: var(--color-gray-dark);
   font-size: 0.95rem;
   line-height: 1.6;
   display: -webkit-box;
@@ -74,7 +74,7 @@
 
 .blog-card-footer {
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-gray-200);
+  border-top: 1px solid var(--color-gray-lighter);
 }
 
 .read-more {

@@ -17,7 +17,7 @@ function BlogGrid({ posts, loading, error }) {
 
   if (!posts || posts.length === 0) {
     return (
-      <Alert variant="info">
+      <Alert variant="light" className="border-primary">
         No hay artículos publicados aún.
       </Alert>
     )

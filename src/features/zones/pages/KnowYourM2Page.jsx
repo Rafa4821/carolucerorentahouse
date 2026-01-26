@@ -171,8 +171,8 @@ function KnowYourM2Page() {
                         </div>
 
                         {selectedZone.description && (
-                          <Alert variant="info" className="mt-3">
-                            <FiAlertCircle className="me-2" />
+                          <Alert variant="light" className="mt-3 border-primary">
+                            <FiAlertCircle className="me-2 text-primary" />
                             {selectedZone.description}
                           </Alert>
                         )}

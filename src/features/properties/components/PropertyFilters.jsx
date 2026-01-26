@@ -12,7 +12,11 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
     minPrice: initialFilters.minPrice || '',
     maxPrice: initialFilters.maxPrice || '',
     bedrooms: initialFilters.bedrooms || '',
-    bathrooms: initialFilters.bathrooms || ''
+    bathrooms: initialFilters.bathrooms || '',
+    parkingSpaces: initialFilters.parkingSpaces || '',
+    minYear: initialFilters.minYear || '',
+    maxYear: initialFilters.maxYear || '',
+    flexCode: initialFilters.flexCode || ''
   })
 
   const handleChange = (e) => {
@@ -40,7 +44,11 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
       minPrice: '',
       maxPrice: '',
       bedrooms: '',
-      bathrooms: ''
+      bathrooms: '',
+      parkingSpaces: '',
+      minYear: '',
+      maxYear: '',
+      flexCode: ''
     })
     onFilter({})
   }
@@ -172,6 +180,66 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
                   <option value="3">3+</option>
                   <option value="4">4+</option>
                 </Form.Select>
+              </Form.Group>
+            </Col>
+
+            <Col md={6} lg={3}>
+              <Form.Group>
+                <Form.Label className="small fw-medium">Estacionamientos</Form.Label>
+                <Form.Select
+                  name="parkingSpaces"
+                  value={filters.parkingSpaces}
+                  onChange={handleChange}
+                >
+                  <option value="">Cualquiera</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+
+            <Col md={6} lg={3}>
+              <Form.Group>
+                <Form.Label className="small fw-medium">Año Min. Construcción</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="minYear"
+                  value={filters.minYear}
+                  onChange={handleChange}
+                  placeholder="Ej: 2000"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                />
+              </Form.Group>
+            </Col>
+
+            <Col md={6} lg={3}>
+              <Form.Group>
+                <Form.Label className="small fw-medium">Año Máx. Construcción</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="maxYear"
+                  value={filters.maxYear}
+                  onChange={handleChange}
+                  placeholder="Ej: 2024"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                />
+              </Form.Group>
+            </Col>
+
+            <Col md={6} lg={3}>
+              <Form.Group>
+                <Form.Label className="small fw-medium">Código Flex</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="flexCode"
+                  value={filters.flexCode}
+                  onChange={handleChange}
+                  placeholder="Buscar por código"
+                />
               </Form.Group>
             </Col>
 

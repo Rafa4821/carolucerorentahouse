@@ -53,6 +53,22 @@ export const propertyService = {
         q = query(q, where('bathrooms', '>=', Number(filters.bathrooms)))
       }
       
+      if (filters.parkingSpaces) {
+        q = query(q, where('parkingSpaces', '>=', Number(filters.parkingSpaces)))
+      }
+      
+      if (filters.minYear) {
+        q = query(q, where('yearBuilt', '>=', Number(filters.minYear)))
+      }
+      
+      if (filters.maxYear) {
+        q = query(q, where('yearBuilt', '<=', Number(filters.maxYear)))
+      }
+      
+      if (filters.flexCode) {
+        q = query(q, where('flexCode', '==', filters.flexCode))
+      }
+      
       q = query(q, orderBy('createdAt', 'desc'))
       
       if (filters.limit) {

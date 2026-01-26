@@ -1,31 +1,33 @@
 :root {
-  --color-primary: #C41E3A;
-  --color-primary-dark: #A01729;
-  --color-primary-light: #E63950;
-  --color-primary-lighter: #F5E6E8;
-  
-  --color-black: #0D0D0D;
-  --color-black-soft: #1A1A1A;
-  --color-black-medium: #2D2D2D;
-  
-  --color-gray-900: #1F1F1F;
-  --color-gray-800: #383838;
-  --color-gray-700: #4F4F4F;
-  --color-gray-600: #6B6B6B;
-  --color-gray-500: #888888;
-  --color-gray-400: #A5A5A5;
-  --color-gray-300: #C2C2C2;
-  --color-gray-200: #DEDEDE;
-  --color-gray-100: #F0F0F0;
-  --color-gray-50: #F8F8F8;
-  
+  /* Rent-A-House Brand Colors */
+  --color-primary: #EE0000;
+  --color-black: #000000;
+  --color-gray: #A6A6A6;
   --color-white: #FFFFFF;
-  --color-white-soft: #FAFAFA;
   
-  --shadow-sm: 0 1px 2px 0 rgba(13, 13, 13, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(13, 13, 13, 0.1), 0 2px 4px -1px rgba(13, 13, 13, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(13, 13, 13, 0.1), 0 4px 6px -2px rgba(13, 13, 13, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(13, 13, 13, 0.1), 0 10px 10px -5px rgba(13, 13, 13, 0.04);
+  /* Professional variations for hierarchy and depth */
+  --color-primary-dark: #CC0000;
+  --color-primary-light: #FF1A1A;
+  --color-primary-lighter: rgba(238, 0, 0, 0.1);
+  --color-primary-hover: #D60000;
+  
+  --color-black-soft: rgba(0, 0, 0, 0.87);
+  --color-black-medium: rgba(0, 0, 0, 0.6);
+  --color-black-light: rgba(0, 0, 0, 0.38);
+  
+  --color-gray-dark: #707070;
+  --color-gray-light: #D3D3D3;
+  --color-gray-lighter: #E8E8E8;
+  --color-gray-lightest: #F5F5F5;
+  
+  --color-white-soft: rgba(255, 255, 255, 0.95);
+  --color-white-overlay: rgba(255, 255, 255, 0.9);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-primary: 0 4px 12px rgba(238, 0, 0, 0.15);
   
   --radius-sm: 4px;
   --radius-md: 8px;

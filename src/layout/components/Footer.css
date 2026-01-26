@@ -4,7 +4,7 @@
 }
 
 .text-light-gray {
-  color: var(--color-gray-400);
+  color: var(--color-gray);
 }
 
 .footer-links li {
@@ -12,7 +12,7 @@
 }
 
 .footer-links a {
-  color: var(--color-gray-400);
+  color: var(--color-gray);
   transition: var(--transition-normal);
 }
 
@@ -22,7 +22,7 @@
 }
 
 .footer-contact li {
-  color: var(--color-gray-400);
+  color: var(--color-gray);
   margin-bottom: var(--spacing-md);
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background-color: var(--color-gray-800);
+  background-color: var(--color-black-medium);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,5 +51,5 @@
 }
 
 .footer hr {
-  border-color: var(--color-gray-800);
+  border-color: var(--color-black-medium);
 }
