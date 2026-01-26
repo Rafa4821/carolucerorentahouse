@@ -1,0 +1,88 @@
+.property-detail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-black);
+  margin-bottom: var(--spacing-sm);
+}
+
+.property-detail-location {
+  color: var(--color-gray-600);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.property-detail-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.property-detail-features {
+  display: flex;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+}
+
+.feature-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-gray-700);
+}
+
+.feature-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.feature-label {
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+}
+
+.property-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-gray-700);
+  white-space: pre-line;
+}
+
+.sticky-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.contact-card {
+  border: 2px solid var(--color-primary);
+}
+
+.contact-info .list-group-item {
+  border: none;
+  padding: var(--spacing-sm) 0;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 991px) {
+  .sticky-sidebar {
+    position: relative;
+    top: 0;
+  }
+  
+  .property-detail-title {
+    font-size: 1.5rem;
+  }
+  
+  .property-detail-price {
+    font-size: 2rem;
+  }
+  
+  .property-detail-features {
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+}

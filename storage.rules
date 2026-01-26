@@ -1,0 +1,39 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidSize() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB
+    }
+    
+    // Properties images - Admin only
+    match /properties/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage() && isValidSize();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Blog images - Admin only
+    match /blog/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage() && isValidSize();
+      allow delete: if isAuthenticated();
+    }
+    
+    // General images - Admin only
+    match /images/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage() && isValidSize();
+      allow delete: if isAuthenticated();
+    }
+  }
+}

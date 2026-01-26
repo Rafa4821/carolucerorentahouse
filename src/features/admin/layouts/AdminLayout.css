@@ -1,0 +1,17 @@
+.admin-layout {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.admin-content {
+  min-height: calc(100vh - 73px);
+}
+
+.navbar-dark .nav-link {
+  transition: var(--transition);
+}
+
+.navbar-dark .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
