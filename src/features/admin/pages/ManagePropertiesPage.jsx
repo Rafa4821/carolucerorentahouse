@@ -34,6 +34,7 @@ function ManagePropertiesPage() {
     m2: '',
     yearBuilt: '',
     description: '',
+    observations: '',
     images: [],
     code: '',
     flexCode: ''
@@ -71,6 +72,7 @@ function ManagePropertiesPage() {
         m2: property.m2 || '',
         yearBuilt: property.yearBuilt || '',
         description: property.description,
+        observations: property.observations || '',
         images: property.images || [],
         code: property.code,
         flexCode: property.flexCode || ''
@@ -91,6 +93,7 @@ function ManagePropertiesPage() {
         m2: '',
         yearBuilt: '',
         description: '',
+        observations: '',
         images: [],
         code: propertyService.generateCode(),
         flexCode: ''
@@ -496,6 +499,23 @@ function ManagePropertiesPage() {
                       required
                       placeholder="Descripción detallada de la propiedad..."
                     />
+                  </Form.Group>
+                </Col>
+
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label>Observaciones</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="observations"
+                      value={formData.observations}
+                      onChange={handleInputChange}
+                      placeholder="Notas adicionales, estado de la propiedad, reparaciones necesarias, etc."
+                    />
+                    <Form.Text className="text-muted">
+                      Este campo es opcional y puede incluir información interna sobre el inmueble
+                    </Form.Text>
                   </Form.Group>
                 </Col>
 

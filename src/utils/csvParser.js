@@ -79,6 +79,7 @@ export const convertCSVToProperties = (csvData) => {
     m2: row.m2 ? Number(row.m2) : 0,
     yearBuilt: row.yearBuilt ? Number(row.yearBuilt) : null,
     description: row.description || '',
+    observations: row.observations || '',
     code: row.code || `PROP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     flexCode: row.flexCode || '',
     images: [],
@@ -102,6 +103,7 @@ export const generateCSVTemplate = () => {
     'm2',
     'yearBuilt',
     'description',
+    'observations',
     'code',
     'flexCode'
   ]
@@ -119,6 +121,7 @@ export const generateCSVTemplate = () => {
     '250',
     '2020',
     'Hermosa casa con jardín y piscina',
+    'Propiedad en excelente estado. Requiere pequeñas reparaciones.',
     'PROP-001',
     'FLEX-12345'
   ]
