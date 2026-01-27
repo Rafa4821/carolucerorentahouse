@@ -129,9 +129,16 @@ function PropertyDetailPage() {
                     <p className="property-description">{property.description}</p>
                   </div>
 
-                  {property.code && (
+                  {property.observations && (
                     <div className="mt-4">
-                      <small className="text-muted">Código: {property.code}</small>
+                      <h4 className="mb-3">Observaciones</h4>
+                      <p className="property-description text-muted">{property.observations}</p>
+                    </div>
+                  )}
+
+                  {property.flexCode && (
+                    <div className="mt-4">
+                      <small className="text-muted">Código: {property.flexCode}</small>
                     </div>
                   )}
                 </Card.Body>

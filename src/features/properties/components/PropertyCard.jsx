@@ -72,9 +72,9 @@ function PropertyCard({ property }) {
               )}
             </div>
 
-            {property.code && (
+            {property.flexCode && (
               <div className="property-card-code mt-2">
-                Código: {property.code}
+                Código: {property.flexCode}
               </div>
             )}
           </Card.Body>

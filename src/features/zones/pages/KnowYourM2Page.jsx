@@ -286,8 +286,9 @@ function KnowYourM2Page() {
                                 value={formData.m2}
                                 onChange={handleInputChange}
                                 required
-                                placeholder="Ej: 80"
-                                min="1"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Ej: 120.50"
                               />
                             </Form.Group>
                           </Col>

@@ -451,6 +451,8 @@ function ManagePropertiesPage() {
                       value={formData.m2}
                       onChange={handleInputChange}
                       min="0"
+                      step="0.01"
+                      placeholder="Ej: 125.50"
                     />
                   </Form.Group>
                 </Col>
