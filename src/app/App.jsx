@@ -14,6 +14,7 @@ import DashboardPage from '../features/admin/pages/DashboardPage'
 import ManagePropertiesPage from '../features/admin/pages/ManagePropertiesPage'
 import ManageBlogPage from '../features/admin/pages/ManageBlogPage'
 import ManageZonesPage from '../features/admin/pages/ManageZonesPage'
+import ManageRequestsPage from '../features/admin/pages/ManageRequestsPage'
 import ProtectedRoute from '../features/auth/components/ProtectedRoute'
 import NotFoundPage from '../layout/pages/NotFoundPage'
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="propiedades" element={<ManagePropertiesPage />} />
           <Route path="blog" element={<ManageBlogPage />} />
           <Route path="zonas" element={<ManageZonesPage />} />
+          <Route path="solicitudes" element={<ManageRequestsPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

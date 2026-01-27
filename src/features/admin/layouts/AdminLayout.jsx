@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap'
-import { FiHome, FiGrid, FiEdit3, FiLogOut, FiExternalLink, FiEye } from 'react-icons/fi'
+import { FiHome, FiGrid, FiEdit3, FiLogOut, FiExternalLink, FiEye, FiMapPin, FiMail } from 'react-icons/fi'
 import { useAuth } from '../../auth/context/AuthContext'
 import './AdminLayout.css'
 
@@ -36,6 +36,14 @@ function AdminLayout() {
             <Nav.Link as={Link} to="/admin/blog" className="text-white">
               <FiEdit3 className="me-2" />
               Blog
+            </Nav.Link>
+            <Nav.Link as={Link} to="/admin/zonas" className="text-white">
+              <FiMapPin className="me-2" />
+              Zonas
+            </Nav.Link>
+            <Nav.Link as={Link} to="/admin/solicitudes" className="text-white">
+              <FiMail className="me-2" />
+              Solicitudes
             </Nav.Link>
             
             <Dropdown align="end">

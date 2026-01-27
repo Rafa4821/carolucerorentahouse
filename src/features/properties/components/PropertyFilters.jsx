@@ -14,8 +14,6 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
     bedrooms: initialFilters.bedrooms || '',
     bathrooms: initialFilters.bathrooms || '',
     parkingSpaces: initialFilters.parkingSpaces || '',
-    minYear: initialFilters.minYear || '',
-    maxYear: initialFilters.maxYear || '',
     flexCode: initialFilters.flexCode || ''
   })
 
@@ -46,8 +44,6 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
       bedrooms: '',
       bathrooms: '',
       parkingSpaces: '',
-      minYear: '',
-      maxYear: '',
       flexCode: ''
     })
     onFilter({})
@@ -93,7 +89,7 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
 
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label className="small fw-medium">Ciudad/Región</Form.Label>
+                <Form.Label className="small fw-medium">Estados</Form.Label>
                 <Form.Select
                   name="city"
                   value={filters.city}
@@ -109,7 +105,7 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
 
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label className="small fw-medium">Zona/Comuna</Form.Label>
+                <Form.Label className="small fw-medium">Zona</Form.Label>
                 <Form.Control
                   type="text"
                   name="zone"
@@ -197,36 +193,6 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
                   <option value="3">3+</option>
                   <option value="4">4+</option>
                 </Form.Select>
-              </Form.Group>
-            </Col>
-
-            <Col md={6} lg={3}>
-              <Form.Group>
-                <Form.Label className="small fw-medium">Año Min. Construcción</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="minYear"
-                  value={filters.minYear}
-                  onChange={handleChange}
-                  placeholder="Ej: 2000"
-                  min="1900"
-                  max={new Date().getFullYear()}
-                />
-              </Form.Group>
-            </Col>
-
-            <Col md={6} lg={3}>
-              <Form.Group>
-                <Form.Label className="small fw-medium">Año Máx. Construcción</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="maxYear"
-                  value={filters.maxYear}
-                  onChange={handleChange}
-                  placeholder="Ej: 2024"
-                  min="1900"
-                  max={new Date().getFullYear()}
-                />
               </Form.Group>
             </Col>
 

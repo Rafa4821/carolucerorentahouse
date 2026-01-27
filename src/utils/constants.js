@@ -4,13 +4,14 @@ export const PROPERTY_TYPES = {
   OFICINA: 'Oficina',
   LOCAL: 'Local Comercial',
   TERRENO: 'Terreno',
-  BODEGA: 'Bodega'
+  BODEGA: 'Bodega',
+  ANEXO: 'Anexo',
+  TOWNHOUSE: 'Townhouse'
 }
 
 export const OPERATION_TYPES = {
   VENTA: 'Venta',
-  ARRIENDO: 'Arriendo',
-  VENTA_ARRIENDO: 'Venta y Arriendo'
+  ALQUILER: 'Alquiler'
 }
 
 export const PROPERTY_STATUS = {

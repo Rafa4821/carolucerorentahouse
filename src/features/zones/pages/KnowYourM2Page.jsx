@@ -19,6 +19,9 @@ function KnowYourM2Page() {
     phone: '',
     zone: '',
     propertyType: '',
+    bedrooms: '',
+    bathrooms: '',
+    parkingSpaces: '',
     m2: '',
     message: ''
   })
@@ -273,6 +276,59 @@ function KnowYourM2Page() {
                                 <option value="oficina">Oficina</option>
                                 <option value="local">Local Comercial</option>
                                 <option value="terreno">Terreno</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Dormitorios</Form.Label>
+                              <Form.Select
+                                name="bedrooms"
+                                value={formData.bedrooms}
+                                onChange={handleInputChange}
+                              >
+                                <option value="">Selecciona...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Baños</Form.Label>
+                              <Form.Select
+                                name="bathrooms"
+                                value={formData.bathrooms}
+                                onChange={handleInputChange}
+                              >
+                                <option value="">Selecciona...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4+</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Estacionamientos</Form.Label>
+                              <Form.Select
+                                name="parkingSpaces"
+                                value={formData.parkingSpaces}
+                                onChange={handleInputChange}
+                              >
+                                <option value="">Selecciona...</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4+</option>
                               </Form.Select>
                             </Form.Group>
                           </Col>

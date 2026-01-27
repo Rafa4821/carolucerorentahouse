@@ -57,14 +57,6 @@ export const propertyService = {
         q = query(q, where('parkingSpaces', '>=', Number(filters.parkingSpaces)))
       }
       
-      if (filters.minYear) {
-        q = query(q, where('yearBuilt', '>=', Number(filters.minYear)))
-      }
-      
-      if (filters.maxYear) {
-        q = query(q, where('yearBuilt', '<=', Number(filters.maxYear)))
-      }
-      
       if (filters.flexCode) {
         q = query(q, where('flexCode', '==', filters.flexCode))
       }

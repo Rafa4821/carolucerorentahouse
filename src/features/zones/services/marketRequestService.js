@@ -2,6 +2,8 @@ import {
   collection, 
   addDoc, 
   getDocs,
+  doc,
+  updateDoc,
   query,
   orderBy,
   where,
@@ -71,6 +73,19 @@ export const marketRequestService = {
       }))
     } catch (error) {
       console.error('Error getting recent requests:', error)
+      throw error
+    }
+  },
+
+  async updateStatus(requestId, status) {
+    try {
+      const docRef = doc(db, COLLECTION_NAME, requestId)
+      await updateDoc(docRef, {
+        status,
+        updatedAt: Timestamp.now()
+      })
+    } catch (error) {
+      console.error('Error updating request status:', error)
       throw error
     }
   }
