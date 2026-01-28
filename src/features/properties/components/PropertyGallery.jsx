@@ -1,18 +1,10 @@
 import { useState } from 'react'
-import { Modal } from 'react-bootstrap'
-import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Thumbs } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/thumbs'
+import ImageGallery from '../../../shared/components/ImageGallery'
 import './PropertyGallery.css'
 
 function PropertyGallery({ images = [] }) {
-  const [showModal, setShowModal] = useState(false)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [thumbsSwiper, setThumbsSwiper] = useState(null)
+  const [showGallery, setShowGallery] = useState(false)
+  const [startIndex, setStartIndex] = useState(0)
 
   if (!images || images.length === 0) {
     return (
@@ -29,7 +21,13 @@ function PropertyGallery({ images = [] }) {
   return (
     <>
       <div className="property-gallery">
-        <div className="gallery-main" onClick={() => setShowModal(true)}>
+        <div 
+          className="gallery-main" 
+          onClick={() => {
+            setStartIndex(0)
+            setShowGallery(true)
+          }}
+        >
           <img 
             src={images[0]} 
             alt="Imagen principal"
@@ -51,8 +49,8 @@ function PropertyGallery({ images = [] }) {
                   key={index} 
                   className="gallery-thumb"
                   onClick={() => {
-                    setActiveIndex(index + 1)
-                    setShowModal(true)
+                    setStartIndex(index + 1)
+                    setShowGallery(true)
                   }}
                 >
                   <img src={image} alt={`Imagen ${index + 2}`} />
@@ -68,63 +66,13 @@ function PropertyGallery({ images = [] }) {
         )}
       </div>
 
-      <Modal 
-        show={showModal} 
-        onHide={() => setShowModal(false)}
-        size="xl"
-        centered
-        className="gallery-modal"
-      >
-        <Modal.Header className="border-0">
-          <button 
-            className="btn-close-gallery"
-            onClick={() => setShowModal(false)}
-          >
-            <FiX size={24} />
-          </button>
-        </Modal.Header>
-        <Modal.Body className="p-0">
-          <Swiper
-            modules={[Navigation, Pagination, Thumbs]}
-            spaceBetween={10}
-            navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }}
-            pagination={{ clickable: true }}
-            thumbs={{ swiper: thumbsSwiper }}
-            initialSlide={activeIndex}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img 
-                  src={image} 
-                  alt={`Imagen ${index + 1}`}
-                  className="gallery-modal-image"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {images.length > 1 && (
-            <Swiper
-              modules={[Thumbs]}
-              onSwiper={setThumbsSwiper}
-              spaceBetween={10}
-              slidesPerView={5}
-              watchSlidesProgress
-              className="gallery-thumbs-swiper mt-3"
-            >
-              {images.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <img src={image} alt={`Miniatura ${index + 1}`} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
-        </Modal.Body>
-      </Modal>
+      {showGallery && (
+        <ImageGallery
+          images={images}
+          currentIndex={startIndex}
+          onClose={() => setShowGallery(false)}
+        />
+      )}
     </>
   )
 }

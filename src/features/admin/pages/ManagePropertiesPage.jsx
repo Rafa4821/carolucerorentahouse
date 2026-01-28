@@ -5,10 +5,11 @@ import { FiPlus, FiEdit2, FiTrash2, FiImage, FiX, FiUpload, FiExternalLink } fro
 import { Link } from 'react-router-dom'
 import { propertyService } from '../../properties/services/propertyService'
 import { storageService } from '../../../services/storageService'
-import { PROPERTY_TYPES, OPERATION_TYPES, REGIONS } from '../../../utils/constants'
+import { PROPERTY_TYPES, OPERATION_TYPES, REGIONS, ZONES_BY_STATE } from '../../../utils/constants'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
 import { formatPrice, formatDate } from '../../../utils/formatters'
 import BulkImportModal from '../components/BulkImportModal'
+import SearchableSelect from '../../../shared/components/SearchableSelect'
 
 function ManagePropertiesPage() {
   const [properties, setProperties] = useState([])
@@ -112,11 +113,23 @@ function ManagePropertiesPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    
+    // Si cambia el estado, resetear la zona
+    if (name === 'city') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        zone: ''
+      }))
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
   }
+  
+  const availableZones = formData.city ? ZONES_BY_STATE[formData.city] || [] : []
 
   const handleImageUpload = async (e) => {
     const files = e.target.files
@@ -359,7 +372,7 @@ function ManagePropertiesPage() {
 
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Ciudad/Región *</Form.Label>
+                    <Form.Label>Estados *</Form.Label>
                     <Form.Select
                       name="city"
                       value={formData.city}
@@ -376,14 +389,15 @@ function ManagePropertiesPage() {
 
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Zona/Comuna *</Form.Label>
-                    <Form.Control
-                      type="text"
+                    <Form.Label>Zonas *</Form.Label>
+                    <SearchableSelect
                       name="zone"
                       value={formData.zone}
                       onChange={handleInputChange}
+                      options={availableZones}
+                      placeholder={formData.city ? 'Selecciona una zona' : 'Primero selecciona un estado'}
+                      disabled={!formData.city}
                       required
-                      placeholder="Ej: Las Condes"
                     />
                   </Form.Group>
                 </Col>

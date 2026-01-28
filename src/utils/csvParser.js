@@ -65,13 +65,47 @@ export const validatePropertyCSV = (data) => {
   }
 }
 
+const normalizePropertyType = (type) => {
+  const typeMap = {
+    'casa': 'CASA',
+    'departamento': 'DEPARTAMENTO',
+    'oficina': 'OFICINA',
+    'local comercial': 'LOCAL',
+    'local': 'LOCAL',
+    'terreno': 'TERRENO',
+    'bodega': 'BODEGA',
+    'anexo': 'ANEXO',
+    'townhouse': 'TOWNHOUSE'
+  }
+  return typeMap[type?.toLowerCase()] || type?.toUpperCase() || 'CASA'
+}
+
+const normalizeOperationType = (operation) => {
+  const operationMap = {
+    'venta': 'VENTA',
+    'alquiler': 'ALQUILER',
+    'arriendo': 'ALQUILER'
+  }
+  return operationMap[operation?.toLowerCase()] || operation?.toUpperCase() || 'VENTA'
+}
+
+const capitalizeFirstLetter = (str) => {
+  if (!str) return ''
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
+const capitalizeWords = (str) => {
+  if (!str) return ''
+  return str.split(' ').map(word => capitalizeFirstLetter(word)).join(' ')
+}
+
 export const convertCSVToProperties = (csvData) => {
   return csvData.map(row => ({
-    title: row.title || '',
-    type: row.type || 'CASA',
-    operation: row.operation || 'VENTA',
-    city: row.city || '',
-    zone: row.zone || '',
+    title: capitalizeWords(row.title) || '',
+    type: normalizePropertyType(row.type),
+    operation: normalizeOperationType(row.operation),
+    city: capitalizeWords(row.city) || '',
+    zone: capitalizeWords(row.zone) || '',
     price: Number(row.price) || 0,
     bedrooms: row.bedrooms ? Number(row.bedrooms) : 0,
     bathrooms: row.bathrooms ? Number(row.bathrooms) : 0,
@@ -109,21 +143,21 @@ export const generateCSVTemplate = () => {
   ]
 
   const example = [
-    'Casa en Altamira',
-    'CASA',
-    'VENTA',
-    'Caracas',
-    'Altamira',
+    'casa en altamira',
+    'casa',
+    'venta',
+    'distrito capital',
+    'altamira',
     '350000',
     '4',
     '3',
     '2',
     '250',
     '2020',
-    'Hermosa casa con jardín y piscina',
-    'Propiedad en excelente estado. Requiere pequeñas reparaciones.',
-    'PROP-001',
-    'FLEX-12345'
+    'hermosa casa con jardín y piscina',
+    'propiedad en excelente estado. requiere pequeñas reparaciones.',
+    'prop-001',
+    'flex-12345'
   ]
 
   const csv = [

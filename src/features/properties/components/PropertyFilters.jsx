@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'
 import { FiSearch, FiX } from 'react-icons/fi'
-import { PROPERTY_TYPES, OPERATION_TYPES, REGIONS } from '../../../utils/constants'
+import { PROPERTY_TYPES, OPERATION_TYPES, REGIONS, ZONES_BY_STATE } from '../../../utils/constants'
+import SearchableSelect from '../../../shared/components/SearchableSelect'
 
 function PropertyFilters({ onFilter, initialFilters = {} }) {
   const [filters, setFilters] = useState({
@@ -19,11 +20,23 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFilters(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    
+    // Si cambia el estado, resetear la zona
+    if (name === 'city') {
+      setFilters(prev => ({
+        ...prev,
+        [name]: value,
+        zone: ''
+      }))
+    } else {
+      setFilters(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
   }
+  
+  const availableZones = filters.city ? ZONES_BY_STATE[filters.city] || [] : []
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -106,12 +119,13 @@ function PropertyFilters({ onFilter, initialFilters = {} }) {
             <Col md={6} lg={3}>
               <Form.Group>
                 <Form.Label className="small fw-medium">Zona</Form.Label>
-                <Form.Control
-                  type="text"
+                <SearchableSelect
                   name="zone"
                   value={filters.zone}
                   onChange={handleChange}
-                  placeholder="Ej: Las Condes"
+                  options={availableZones}
+                  placeholder={filters.city ? 'Selecciona una zona' : 'Primero selecciona un estado'}
+                  disabled={!filters.city}
                 />
               </Form.Group>
             </Col>
