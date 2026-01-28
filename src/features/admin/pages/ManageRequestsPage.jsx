@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Badge, Alert, Card, InputGroup } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiMail, FiPhone, FiMapPin, FiHome, FiCheckCircle, FiClock, FiX, FiDownload, FiSearch, FiFilter } from 'react-icons/fi'
+import { FiMail, FiPhone, FiMapPin, FiHome, FiCheckCircle, FiClock, FiX, FiDownload, FiSearch, FiFilter, FiTrash2 } from 'react-icons/fi'
 import { marketRequestService } from '../../zones/services/marketRequestService'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
 import { formatPrice, formatDate } from '../../../utils/formatters'
@@ -14,6 +14,8 @@ function ManageRequestsPage() {
   const [filterStatus, setFilterStatus] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [updating, setUpdating] = useState(false)
+  const [selectedItems, setSelectedItems] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
   useEffect(() => {
     loadRequests()
@@ -28,6 +30,69 @@ function ManageRequestsPage() {
       console.error('Error loading requests:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(filteredRequests.map(r => r.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  const handleSelectItem = (id) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una solicitud para eliminar')
+      return
+    }
+
+    if (!window.confirm(`¿Estás seguro de eliminar ${selectedItems.length} solicitud(es)?`)) return
+
+    try {
+      setUpdating(true)
+      await Promise.all(selectedItems.map(id => marketRequestService.delete(id)))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadRequests()
+      alert('Solicitudes eliminadas exitosamente')
+    } catch (err) {
+      alert('Error al eliminar solicitudes: ' + err.message)
+    } finally {
+      setUpdating(false)
+    }
+  }
+
+  const handleBulkStatusChange = async (newStatus) => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una solicitud')
+      return
+    }
+
+    try {
+      setUpdating(true)
+      await Promise.all(selectedItems.map(id => 
+        marketRequestService.updateStatus(id, newStatus)
+      ))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadRequests()
+      alert(`Estado actualizado para ${selectedItems.length} solicitud(es)`)
+    } catch (err) {
+      alert('Error al actualizar estado: ' + err.message)
+    } finally {
+      setUpdating(false)
     }
   }
 
@@ -216,6 +281,24 @@ function ManageRequestsPage() {
         </Card.Body>
       </Card>
 
+      {/* Barra de acciones masivas */}
+      {selectedItems.length > 0 && (
+        <Alert variant="info" className="d-flex justify-content-between align-items-center">
+          <span><strong>{selectedItems.length}</strong> solicitud(es) seleccionada(s)</span>
+          <div className="d-flex gap-2">
+            <Button variant="outline-info" size="sm" onClick={() => handleBulkStatusChange('contacted')}>
+              Marcar Contactado
+            </Button>
+            <Button variant="outline-success" size="sm" onClick={() => handleBulkStatusChange('completed')}>
+              Marcar Completado
+            </Button>
+            <Button variant="danger" size="sm" onClick={handleBulkDelete} disabled={updating}>
+              <FiTrash2 className="me-1" /> Eliminar
+            </Button>
+          </div>
+        </Alert>
+      )}
+
       {/* Tabla de solicitudes */}
       <Card className="shadow-sm">
         <Card.Body className="p-0">
@@ -233,6 +316,14 @@ function ManageRequestsPage() {
               <Table hover className="mb-0">
                 <thead className="bg-light">
                   <tr>
+                    <th style={{ width: '50px' }}>
+                      <Form.Check
+                        type="checkbox"
+                        checked={selectAll}
+                        onChange={handleSelectAll}
+                        label=""
+                      />
+                    </th>
                     <th>Fecha</th>
                     <th>Nombre</th>
                     <th>Contacto</th>
@@ -247,6 +338,14 @@ function ManageRequestsPage() {
                 <tbody>
                   {filteredRequests.map(request => (
                     <tr key={request.id}>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          checked={selectedItems.includes(request.id)}
+                          onChange={() => handleSelectItem(request.id)}
+                          label=""
+                        />
+                      </td>
                       <td>
                         <small className="text-muted">
                           {formatDate(request.createdAt)}

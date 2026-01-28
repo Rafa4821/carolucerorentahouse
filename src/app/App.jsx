@@ -15,6 +15,7 @@ import ManagePropertiesPage from '../features/admin/pages/ManagePropertiesPage'
 import ManageBlogPage from '../features/admin/pages/ManageBlogPage'
 import ManageZonesPage from '../features/admin/pages/ManageZonesPage'
 import ManageRequestsPage from '../features/admin/pages/ManageRequestsPage'
+import ManageContactPage from '../features/admin/pages/ManageContactPage'
 import ProtectedRoute from '../features/auth/components/ProtectedRoute'
 import NotFoundPage from '../layout/pages/NotFoundPage'
 
@@ -45,7 +46,8 @@ function App() {
           <Route path="propiedades" element={<ManagePropertiesPage />} />
           <Route path="blog" element={<ManageBlogPage />} />
           <Route path="zonas" element={<ManageZonesPage />} />
-          <Route path="solicitudes" element={<ManageRequestsPage />} />
+          <Route path="solicitudes-m2" element={<ManageRequestsPage />} />
+          <Route path="consultas" element={<ManageContactPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

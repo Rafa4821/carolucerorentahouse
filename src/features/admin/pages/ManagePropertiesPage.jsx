@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Badge, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2, FiImage, FiX, FiUpload, FiExternalLink } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiImage, FiX, FiUpload, FiExternalLink, FiDownload, FiCheckSquare } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { propertyService } from '../../properties/services/propertyService'
 import { storageService } from '../../../services/storageService'
@@ -21,6 +21,8 @@ function ManagePropertiesPage() {
   const [uploadingImages, setUploadingImages] = useState(false)
   const [imagePreviews, setImagePreviews] = useState([])
   const [showBulkImport, setShowBulkImport] = useState(false)
+  const [selectedItems, setSelectedItems] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -193,6 +195,106 @@ function ManagePropertiesPage() {
     }
   }
 
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(properties.map(p => p.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  const handleSelectItem = (id) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una propiedad para eliminar')
+      return
+    }
+
+    if (!window.confirm(`¿Estás seguro de eliminar ${selectedItems.length} propiedad(es)?`)) return
+
+    try {
+      setSubmitting(true)
+      await Promise.all(selectedItems.map(id => propertyService.delete(id)))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadProperties()
+      alert('Propiedades eliminadas exitosamente')
+    } catch (err) {
+      alert('Error al eliminar propiedades: ' + err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleBulkStatusChange = async (status) => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una propiedad')
+      return
+    }
+
+    try {
+      setSubmitting(true)
+      await Promise.all(selectedItems.map(id => 
+        propertyService.update(id, { status })
+      ))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadProperties()
+      alert(`Estado actualizado para ${selectedItems.length} propiedad(es)`)
+    } catch (err) {
+      alert('Error al actualizar estado: ' + err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleExportSelected = () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una propiedad para exportar')
+      return
+    }
+
+    const selectedProps = properties.filter(p => selectedItems.includes(p.id))
+    const headers = ['Título', 'Tipo', 'Operación', 'Estado', 'Zona', 'Precio', 'M²', 'Dormitorios', 'Baños', 'Código Flex']
+    const rows = selectedProps.map(p => [
+      p.title,
+      p.type,
+      p.operation,
+      p.city,
+      p.zone,
+      p.price,
+      p.m2,
+      p.bedrooms,
+      p.bathrooms,
+      p.flexCode
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `propiedades_seleccionadas_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar esta propiedad?')) return
 
@@ -233,11 +335,39 @@ function ManagePropertiesPage() {
 
         {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
+        {selectedItems.length > 0 && (
+          <Alert variant="info" className="d-flex justify-content-between align-items-center">
+            <span><strong>{selectedItems.length}</strong> propiedad(es) seleccionada(s)</span>
+            <div className="d-flex gap-2">
+              <Button variant="outline-success" size="sm" onClick={handleExportSelected}>
+                <FiDownload className="me-1" /> Exportar
+              </Button>
+              <Button variant="outline-warning" size="sm" onClick={() => handleBulkStatusChange('DISPONIBLE')}>
+                Marcar Disponible
+              </Button>
+              <Button variant="outline-secondary" size="sm" onClick={() => handleBulkStatusChange('VENDIDA')}>
+                Marcar Vendida
+              </Button>
+              <Button variant="danger" size="sm" onClick={handleBulkDelete} disabled={submitting}>
+                <FiTrash2 className="me-1" /> Eliminar
+              </Button>
+            </div>
+          </Alert>
+        )}
+
         <Card>
           <Card.Body className="p-0">
             <Table responsive hover className="mb-0">
               <thead>
                 <tr>
+                  <th style={{ width: '50px' }}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      label=""
+                    />
+                  </th>
                   <th>Código</th>
                   <th>Título</th>
                   <th>Tipo</th>
@@ -252,6 +382,14 @@ function ManagePropertiesPage() {
                 {properties.length > 0 ? (
                   properties.map(property => (
                     <tr key={property.id}>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          checked={selectedItems.includes(property.id)}
+                          onChange={() => handleSelectItem(property.id)}
+                          label=""
+                        />
+                      </td>
                       <td><Badge bg="secondary">{property.code}</Badge></td>
                       <td>{property.title}</td>
                       <td>{PROPERTY_TYPES[property.type]}</td>

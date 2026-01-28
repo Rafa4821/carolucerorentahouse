@@ -1,7 +1,8 @@
-import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
+import { contactService } from '../services/contactService'
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -10,10 +11,35 @@ function ContactPage() {
     phone: '',
     message: ''
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Formulario enviado:', formData)
+    
+    try {
+      setSubmitting(true)
+      setError(null)
+      setSuccess(false)
+      
+      await contactService.create(formData)
+      
+      setSuccess(true)
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      })
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch (err) {
+      setError('Error al enviar el mensaje. Por favor intenta nuevamente.')
+      console.error('Error submitting contact form:', err)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -86,6 +112,19 @@ function ContactPage() {
               <Card className="mt-5 border-0 shadow-sm">
                 <Card.Body className="p-5">
                   <h3 className="mb-4">Envíanos un mensaje</h3>
+                  
+                  {success && (
+                    <Alert variant="success" dismissible onClose={() => setSuccess(false)}>
+                      ¡Mensaje enviado exitosamente! Te contactaremos pronto.
+                    </Alert>
+                  )}
+                  
+                  {error && (
+                    <Alert variant="danger" dismissible onClose={() => setError(null)}>
+                      {error}
+                    </Alert>
+                  )}
+                  
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Col md={6}>
@@ -141,9 +180,9 @@ function ContactPage() {
                       />
                     </Form.Group>
 
-                    <Button type="submit" variant="primary" size="lg" className="px-5">
+                    <Button type="submit" variant="primary" size="lg" className="px-5" disabled={submitting}>
                       <FiSend className="me-2" />
-                      Enviar Mensaje
+                      {submitting ? 'Enviando...' : 'Enviar Mensaje'}
                     </Button>
                   </Form>
                 </Card.Body>

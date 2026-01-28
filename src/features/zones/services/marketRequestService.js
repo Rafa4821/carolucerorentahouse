@@ -4,6 +4,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   query,
   orderBy,
   where,
@@ -86,6 +87,16 @@ export const marketRequestService = {
       })
     } catch (error) {
       console.error('Error updating request status:', error)
+      throw error
+    }
+  },
+
+  async delete(requestId) {
+    try {
+      const docRef = doc(db, COLLECTION_NAME, requestId)
+      await deleteDoc(docRef)
+    } catch (error) {
+      console.error('Error deleting request:', error)
       throw error
     }
   }

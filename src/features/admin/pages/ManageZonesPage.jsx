@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2, FiUpload } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiUpload, FiDownload } from 'react-icons/fi'
 import { zoneService } from '../../zones/services/zoneService'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
 import { formatPrice } from '../../../utils/formatters'
@@ -15,6 +15,8 @@ function ManageZonesPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
   const [showBulkImport, setShowBulkImport] = useState(false)
+  const [selectedItems, setSelectedItems] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -99,6 +101,77 @@ function ManageZonesPage() {
     }
   }
 
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(zones.map(z => z.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  const handleSelectItem = (id) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una zona para eliminar')
+      return
+    }
+
+    if (!window.confirm(`¿Estás seguro de eliminar ${selectedItems.length} zona(s)?`)) return
+
+    try {
+      setSubmitting(true)
+      await Promise.all(selectedItems.map(id => zoneService.delete(id)))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadZones()
+      alert('Zonas eliminadas exitosamente')
+    } catch (err) {
+      alert('Error al eliminar zonas: ' + err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleExportSelected = () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos una zona para exportar')
+      return
+    }
+
+    const selectedZones = zones.filter(z => selectedItems.includes(z.id))
+    const headers = ['Nombre', 'Precio M² Promedio', 'Descripción']
+    const rows = selectedZones.map(z => [
+      z.name,
+      z.avgPriceM2,
+      z.description || ''
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `zonas_seleccionadas_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar esta zona?')) return
 
@@ -139,11 +212,33 @@ function ManageZonesPage() {
 
         {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
+        {selectedItems.length > 0 && (
+          <Alert variant="info" className="d-flex justify-content-between align-items-center">
+            <span><strong>{selectedItems.length}</strong> zona(s) seleccionada(s)</span>
+            <div className="d-flex gap-2">
+              <Button variant="outline-success" size="sm" onClick={handleExportSelected}>
+                <FiDownload className="me-1" /> Exportar
+              </Button>
+              <Button variant="danger" size="sm" onClick={handleBulkDelete} disabled={submitting}>
+                <FiTrash2 className="me-1" /> Eliminar
+              </Button>
+            </div>
+          </Alert>
+        )}
+
         <Card>
           <Card.Body className="p-0">
             <Table responsive hover className="mb-0">
               <thead>
                 <tr>
+                  <th style={{ width: '50px' }}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      label=""
+                    />
+                  </th>
                   <th>Zona/Comuna</th>
                   <th>Valor Promedio M²</th>
                   <th>Descripción</th>
@@ -154,6 +249,14 @@ function ManageZonesPage() {
                 {zones.length > 0 ? (
                   zones.map(zone => (
                     <tr key={zone.id}>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          checked={selectedItems.includes(zone.id)}
+                          onChange={() => handleSelectItem(zone.id)}
+                          label=""
+                        />
+                      </td>
                       <td><strong>{zone.name}</strong></td>
                       <td className="text-primary fw-bold">{formatPrice(zone.avgPriceM2)}</td>
                       <td>

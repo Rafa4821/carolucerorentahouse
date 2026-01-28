@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Row, Col, Badge, Alert, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import { FiPlus, FiEdit2, FiTrash2, FiImage, FiExternalLink } from 'react-icons/fi'
+import { FiPlus, FiEdit2, FiTrash2, FiImage, FiExternalLink, FiDownload } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { blogService } from '../../blog/services/blogService'
 import { storageService } from '../../../services/storageService'
@@ -16,6 +16,8 @@ function ManageBlogPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [selectedItems, setSelectedItems] = useState([])
+  const [selectAll, setSelectAll] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -126,6 +128,100 @@ function ManageBlogPage() {
     }
   }
 
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([])
+    } else {
+      setSelectedItems(posts.map(p => p.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  const handleSelectItem = (id) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos un artículo para eliminar')
+      return
+    }
+
+    if (!window.confirm(`¿Estás seguro de eliminar ${selectedItems.length} artículo(s)?`)) return
+
+    try {
+      setSubmitting(true)
+      await Promise.all(selectedItems.map(id => blogService.delete(id)))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadPosts()
+      alert('Artículos eliminados exitosamente')
+    } catch (err) {
+      alert('Error al eliminar artículos: ' + err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleBulkPublish = async (published) => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos un artículo')
+      return
+    }
+
+    try {
+      setSubmitting(true)
+      await Promise.all(selectedItems.map(id => 
+        blogService.update(id, { published })
+      ))
+      setSelectedItems([])
+      setSelectAll(false)
+      await loadPosts()
+      alert(`${selectedItems.length} artículo(s) ${published ? 'publicado(s)' : 'despublicado(s)'}`)
+    } catch (err) {
+      alert('Error al actualizar artículos: ' + err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleExportSelected = () => {
+    if (selectedItems.length === 0) {
+      alert('Selecciona al menos un artículo para exportar')
+      return
+    }
+
+    const selectedPosts = posts.filter(p => selectedItems.includes(p.id))
+    const headers = ['Título', 'Extracto', 'Publicado', 'Fecha']
+    const rows = selectedPosts.map(p => [
+      p.title,
+      p.excerpt,
+      p.published ? 'Sí' : 'No',
+      new Date(p.createdAt).toLocaleDateString()
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `blog_seleccionados_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar este artículo?')) return
 
@@ -170,11 +266,39 @@ function ManageBlogPage() {
 
         {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
+        {selectedItems.length > 0 && (
+          <Alert variant="info" className="d-flex justify-content-between align-items-center">
+            <span><strong>{selectedItems.length}</strong> artículo(s) seleccionado(s)</span>
+            <div className="d-flex gap-2">
+              <Button variant="outline-success" size="sm" onClick={handleExportSelected}>
+                <FiDownload className="me-1" /> Exportar
+              </Button>
+              <Button variant="outline-success" size="sm" onClick={() => handleBulkPublish(true)}>
+                Publicar
+              </Button>
+              <Button variant="outline-warning" size="sm" onClick={() => handleBulkPublish(false)}>
+                Despublicar
+              </Button>
+              <Button variant="danger" size="sm" onClick={handleBulkDelete} disabled={submitting}>
+                <FiTrash2 className="me-1" /> Eliminar
+              </Button>
+            </div>
+          </Alert>
+        )}
+
         <Card>
           <Card.Body className="p-0">
             <Table responsive hover className="mb-0">
               <thead>
                 <tr>
+                  <th style={{ width: '50px' }}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      label=""
+                    />
+                  </th>
                   <th>Título</th>
                   <th>Estado</th>
                   <th>Fecha</th>
@@ -185,6 +309,14 @@ function ManageBlogPage() {
                 {posts.length > 0 ? (
                   posts.map(post => (
                     <tr key={post.id}>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          checked={selectedItems.includes(post.id)}
+                          onChange={() => handleSelectItem(post.id)}
+                          label=""
+                        />
+                      </td>
                       <td>
                         <div>
                           <strong>{post.title}</strong>
