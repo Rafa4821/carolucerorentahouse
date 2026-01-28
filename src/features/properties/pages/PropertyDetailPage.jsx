@@ -2,6 +2,7 @@ import { Container, Row, Col, Card, Badge, Button, ListGroup } from 'react-boots
 import { useParams, Link } from 'react-router-dom'
 import SEO from '../../../layout/components/SEO'
 import { FiHome, FiDroplet, FiMaximize2, FiMapPin, FiPhone, FiMail, FiArrowLeft, FiShare2 } from 'react-icons/fi'
+import { FaWhatsapp } from 'react-icons/fa'
 import { useProperty } from '../hooks/useProperties'
 import PropertyGallery from '../components/PropertyGallery'
 import LoadingSpinner from '../../../layout/components/LoadingSpinner'
@@ -166,14 +167,16 @@ function PropertyDetailPage() {
                         Enviar Consulta
                       </Button>
 
-                      <Button 
-                        variant="outline-primary" 
+                      <Button
+                        variant="success"
                         size="lg"
-                        href="tel:+56912345678"
+                        href={`https://wa.me/584141412628?text=${encodeURIComponent(`Hola, estoy interesado en la propiedad: ${property.title} - ${property.zone}, ${property.city}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-100"
                       >
-                        <FiPhone className="me-2" />
-                        Llamar Ahora
+                        <FaWhatsapp className="me-2" />
+                        Consultar por WhatsApp
                       </Button>
                     </div>
 
@@ -184,7 +187,7 @@ function PropertyDetailPage() {
                       <ListGroup variant="flush">
                         <ListGroup.Item className="px-0">
                           <FiPhone className="me-2 text-primary" />
-                          +56 9 1234 5678
+                          +58 414-1412628
                         </ListGroup.Item>
                         <ListGroup.Item className="px-0">
                           <FiMail className="me-2 text-primary" />

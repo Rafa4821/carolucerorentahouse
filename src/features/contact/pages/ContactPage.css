@@ -1,0 +1,43 @@
+/* Estilos para cards de contacto */
+.contact-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* En desktop, deshabilitar interacción de enlace */
+@media (min-width: 768px) {
+  .contact-card-link {
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+/* En móvil, habilitar interacción y efectos hover/active */
+@media (max-width: 767px) {
+  .contact-card-link {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .contact-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-card-link:active .contact-card {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-card-link .contact-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Iconos de contacto */
+.contact-icon {
+  color: #dc3545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

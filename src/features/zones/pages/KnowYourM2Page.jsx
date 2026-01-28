@@ -256,7 +256,7 @@ function KnowYourM2Page() {
                                 value={formData.phone}
                                 onChange={handleInputChange}
                                 required
-                                placeholder="+56 9 1234 5678"
+                                placeholder="+58 414-1412628"
                               />
                             </Form.Group>
                           </Col>

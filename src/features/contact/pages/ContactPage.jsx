@@ -3,6 +3,7 @@ import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { contactService } from '../services/contactService'
+import './ContactPage.css'
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -64,48 +65,66 @@ function ContactPage() {
 
               <Row className="g-4">
                 <Col lg={4}>
-                  <Card className="text-center h-100 border-0">
-                    <Card.Body className="p-4">
-                      <div className="contact-icon mb-3">
-                        <FiMapPin size={32} />
-                      </div>
-                      <h5 className="fw-bold">Ubicación</h5>
-                      <p className="text-muted">
-                        Caracas, Venezuela<br />
-                        Distrito Capital
-                      </p>
-                    </Card.Body>
-                  </Card>
+                  <a 
+                    href="https://maps.google.com/?q=Av.+Estancia+C/C+Calle+Ernesto+Blohm,+C.C.+Ciudad+Tamanaco,+Torre+B,+Piso+3,+Ofc.+B-301,+Caracas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-card-link"
+                  >
+                    <Card className="text-center h-100 border-0 contact-card">
+                      <Card.Body className="p-4">
+                        <div className="contact-icon mb-3">
+                          <FiMapPin size={32} />
+                        </div>
+                        <h5 className="fw-bold">Ubicación</h5>
+                        <p className="text-muted" style={{ fontSize: '0.9rem' }}>
+                          Av. Estancia C/C Calle Ernesto Blohm<br />
+                          C.C. Ciudad Tamanaco, Torre B, Piso 3<br />
+                          Ofc. B-301, Caracas
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </a>
                 </Col>
 
                 <Col lg={4}>
-                  <Card className="text-center h-100 border-0">
-                    <Card.Body className="p-4">
-                      <div className="contact-icon mb-3">
-                        <FiPhone size={32} />
-                      </div>
-                      <h5 className="fw-bold">Teléfono</h5>
-                      <p className="text-muted">
-                        +56 9 1234 5678<br />
-                        Lun - Vie: 9:00 - 18:00
-                      </p>
-                    </Card.Body>
-                  </Card>
+                  <a 
+                    href="tel:+584141412628"
+                    className="contact-card-link"
+                  >
+                    <Card className="text-center h-100 border-0 contact-card">
+                      <Card.Body className="p-4">
+                        <div className="contact-icon mb-3">
+                          <FiPhone size={32} />
+                        </div>
+                        <h5 className="fw-bold">Teléfono</h5>
+                        <p className="text-muted">
+                          +58 414-1412628<br />
+                          Lun - Vie: 9:00 - 18:00
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </a>
                 </Col>
 
                 <Col lg={4}>
-                  <Card className="text-center h-100 border-0">
-                    <Card.Body className="p-4">
-                      <div className="contact-icon mb-3">
-                        <FiMail size={32} />
-                      </div>
-                      <h5 className="fw-bold">Email</h5>
-                      <p className="text-muted">
-                        info@carolucero.cl<br />
-                        contacto@carolucero.cl
-                      </p>
-                    </Card.Body>
-                  </Card>
+                  <a 
+                    href="mailto:info@carolucero.cl"
+                    className="contact-card-link"
+                  >
+                    <Card className="text-center h-100 border-0 contact-card">
+                      <Card.Body className="p-4">
+                        <div className="contact-icon mb-3">
+                          <FiMail size={32} />
+                        </div>
+                        <h5 className="fw-bold">Email</h5>
+                        <p className="text-muted">
+                          info@carolucero.cl<br />
+                          contacto@carolucero.cl
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </a>
                 </Col>
               </Row>
 
@@ -163,7 +182,7 @@ function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+56 9 1234 5678"
+                        placeholder="+58 414-1412628"
                       />
                     </Form.Group>
 
