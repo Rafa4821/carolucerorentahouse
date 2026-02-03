@@ -174,10 +174,10 @@ function KnowYourM2Page() {
                         </div>
 
                         {selectedZone.description && (
-                          <Alert variant="light" className="mt-3 border-primary">
+                          <div className="zone-description-box mt-3 p-3 rounded">
                             <FiAlertCircle className="me-2 text-primary" />
                             {selectedZone.description}
-                          </Alert>
+                          </div>
                         )}
 
                         <div className="disclaimer mt-4 p-3 bg-light rounded">
@@ -256,7 +256,7 @@ function KnowYourM2Page() {
                                 value={formData.phone}
                                 onChange={handleInputChange}
                                 required
-                                placeholder="+58 414-1412628"
+                                placeholder="04129529660"
                               />
                             </Form.Group>
                           </Col>
@@ -401,7 +401,7 @@ function KnowYourM2Page() {
             </Col>
 
             <Col lg={10} className="mx-auto mt-5">
-              <Card className="bg-primary text-white">
+              <Card className="info-card-red text-white">
                 <Card.Body className="p-4 text-center">
                   <h4 className="mb-3">¿Por qué solicitar un análisis?</h4>
                   <Row className="g-4 mt-2">

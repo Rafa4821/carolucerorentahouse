@@ -19,16 +19,12 @@ function Header() {
       onToggle={setExpanded}
     >
       <Container>
-        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-3">
+        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <img 
-            src="https://firebasestorage.googleapis.com/v0/b/carolucero-rah.firebasestorage.app/o/logo%20rah%20horizontalsin%20fondo%20bordes%20blanco.png?alt=media&token=5e749a31-47a7-4e71-8560-f853fea570c3"
+            src="https://firebasestorage.googleapis.com/v0/b/carolucero-rah.firebasestorage.app/o/logo%20rah%20horizontal%20sin%20fondo%20con%20nombre.png?alt=media"
             alt="Carolina Lucero RAH - Rent-A-House"
             className="navbar-logo"
           />
-          <div className="d-flex flex-column">
-            <span className="brand-name">Carolina Lucero</span>
-            <span className="brand-suffix">RAH</span>
-          </div>
         </Navbar.Brand>
         
         <Navbar.Toggle 

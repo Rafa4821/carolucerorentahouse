@@ -3,6 +3,29 @@
   text-decoration: none;
   color: inherit;
   display: block;
+  height: 100%;
+}
+
+.contact-card {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-card .text-muted {
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* En desktop, deshabilitar interacción de enlace */
@@ -36,8 +59,9 @@
 
 /* Iconos de contacto */
 .contact-icon {
-  color: #dc3545;
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 50px;
 }

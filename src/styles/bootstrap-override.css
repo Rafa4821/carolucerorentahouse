@@ -1,0 +1,113 @@
+/* Bootstrap Color Override - MUST be loaded after bootstrap.min.css */
+
+/* Override Bootstrap primary color variables */
+:root {
+  --bs-primary: #EE0000 !important;
+  --bs-primary-rgb: 238, 0, 0 !important;
+  --bs-btn-bg: #EE0000 !important;
+  --bs-btn-border-color: #EE0000 !important;
+  --bs-btn-hover-bg: #CC0000 !important;
+  --bs-btn-hover-border-color: #CC0000 !important;
+  --bs-btn-active-bg: #CC0000 !important;
+  --bs-btn-active-border-color: #CC0000 !important;
+}
+
+/* Force all primary buttons to use corporate red */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:disabled,
+.btn-primary.disabled,
+.btn-check:checked + .btn-primary,
+.btn-check:active + .btn-primary,
+.btn-primary:first-child:active,
+:not(.btn-check) + .btn-primary:active {
+  background-color: #EE0000 !important;
+  border-color: #EE0000 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #CC0000 !important;
+  border-color: #CC0000 !important;
+}
+
+/* Force outline primary buttons */
+.btn-outline-primary {
+  color: #EE0000 !important;
+  border-color: #EE0000 !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: #EE0000 !important;
+  border-color: #EE0000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Force text-primary color */
+.text-primary {
+  color: #EE0000 !important;
+}
+
+/* Force bg-primary color */
+.bg-primary {
+  background-color: #EE0000 !important;
+}
+
+/* Force border-primary color */
+.border-primary {
+  border-color: #EE0000 !important;
+}
+
+/* Force Alert info to use gray instead of blue */
+.alert-info {
+  background-color: #F5F5F5 !important;
+  border-color: #EE0000 !important;
+  color: #000000 !important;
+}
+
+/* Force Spinner primary color */
+.spinner-border-primary,
+.spinner-border.text-primary {
+  color: #EE0000 !important;
+  border-color: #EE0000 !important;
+}
+
+/* Force link colors */
+a.text-primary,
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #EE0000 !important;
+}
+
+/* Badge primary */
+.badge.bg-primary {
+  background-color: #EE0000 !important;
+}
+
+/* Progress bar primary */
+.progress-bar.bg-primary {
+  background-color: #EE0000 !important;
+}
+
+/* List group item primary */
+.list-group-item-primary {
+  background-color: rgba(238, 0, 0, 0.1) !important;
+  color: #000000 !important;
+}
+
+/* Table primary */
+.table-primary {
+  background-color: rgba(238, 0, 0, 0.1) !important;
+  color: #000000 !important;
+}
+
+/* Nav link active */
+.nav-link.active {
+  color: #EE0000 !important;
+}

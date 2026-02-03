@@ -170,7 +170,7 @@ function PropertyDetailPage() {
                       <Button
                         variant="success"
                         size="lg"
-                        href={`https://wa.me/584141412628?text=${encodeURIComponent(`Hola, estoy interesado en la propiedad: ${property.title} - ${property.zone}, ${property.city}`)}`}
+                        href={`https://wa.me/584129529660?text=${encodeURIComponent(`Hola, estoy interesado en la propiedad: ${property.title} - ${property.zone}, ${property.city}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-100"
@@ -187,11 +187,11 @@ function PropertyDetailPage() {
                       <ListGroup variant="flush">
                         <ListGroup.Item className="px-0">
                           <FiPhone className="me-2 text-primary" />
-                          +58 414-1412628
+                          04129529660
                         </ListGroup.Item>
                         <ListGroup.Item className="px-0">
                           <FiMail className="me-2 text-primary" />
-                          info@carolucero.cl
+                          carolinalucero.rah@gmail.com
                         </ListGroup.Item>
                       </ListGroup>
                     </div>

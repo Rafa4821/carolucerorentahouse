@@ -89,7 +89,7 @@ function ContactPage() {
 
                 <Col lg={4}>
                   <a 
-                    href="tel:+584141412628"
+                    href="tel:+584129529660"
                     className="contact-card-link"
                   >
                     <Card className="text-center h-100 border-0 contact-card">
@@ -99,7 +99,7 @@ function ContactPage() {
                         </div>
                         <h5 className="fw-bold">Teléfono</h5>
                         <p className="text-muted">
-                          +58 414-1412628<br />
+                          04129529660<br />
                           Lun - Vie: 9:00 - 18:00
                         </p>
                       </Card.Body>
@@ -109,7 +109,7 @@ function ContactPage() {
 
                 <Col lg={4}>
                   <a 
-                    href="mailto:info@carolucero.cl"
+                    href="mailto:carolinalucero.rah@gmail.com"
                     className="contact-card-link"
                   >
                     <Card className="text-center h-100 border-0 contact-card">
@@ -119,8 +119,7 @@ function ContactPage() {
                         </div>
                         <h5 className="fw-bold">Email</h5>
                         <p className="text-muted">
-                          info@carolucero.cl<br />
-                          contacto@carolucero.cl
+                          carolinalucero.rah@gmail.com
                         </p>
                       </Card.Body>
                     </Card>
@@ -182,7 +181,7 @@ function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+58 414-1412628"
+                        placeholder="04129529660"
                       />
                     </Form.Group>
 

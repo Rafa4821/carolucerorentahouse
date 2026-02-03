@@ -11,8 +11,8 @@ export const generateStructuredData = (type, data) => {
         name: 'Carolina Lucero RAH',
         description: 'Inmobiliaria profesional en Caracas, Venezuela',
         url: 'https://carolinalucero.com',
-        telephone: '+56912345678',
-        email: 'info@carolucero.cl',
+        telephone: '04129529660',
+        email: 'carolinalucero.rah@gmail.com',
         address: {
           '@type': 'PostalAddress',
           addressCountry: 'VE',

@@ -5,6 +5,10 @@
   --color-gray: #A6A6A6;
   --color-white: #FFFFFF;
   
+  /* Bootstrap Override - Force primary color */
+  --bs-primary: #EE0000;
+  --bs-primary-rgb: 238, 0, 0;
+  
   /* Professional variations for hierarchy and depth */
   --color-primary-dark: #CC0000;
   --color-primary-light: #FF1A1A;

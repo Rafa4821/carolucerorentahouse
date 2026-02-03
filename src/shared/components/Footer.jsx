@@ -55,11 +55,11 @@ function Footer() {
               </li>
               <li>
                 <FiPhone className="me-2" />
-                +58 414-1412628
+                04129529660
               </li>
               <li>
                 <FiMail className="me-2" />
-                info@carolucero.cl
+                carolinalucero.rah@gmail.com
               </li>
             </ul>
           </Col>

@@ -57,7 +57,6 @@ function HomePage() {
               </motion.p>
               
               <motion.div 
-                className="d-flex gap-3 flex-wrap"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -76,21 +75,6 @@ function HomePage() {
                   >
                     <FiSearch className="me-2" />
                     Ver Propiedades
-                  </Button>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
-                  <Button 
-                    as={Link} 
-                    to="/propiedades?tipo=venta" 
-                    variant="outline-light" 
-                    size="lg" 
-                    className="px-5 py-3"
-                  >
-                    Comprar
                   </Button>
                 </motion.div>
               </motion.div>
