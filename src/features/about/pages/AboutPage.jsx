@@ -62,9 +62,9 @@ function AboutPage() {
       </section>
 
       {/* Sobre Carolina */}
-      <section className="py-5 bg-light">
+      <section className="py-4 bg-light">
         <Container>
-          <Row className="align-items-center g-5">
+          <Row className="align-items-center g-4">
             <Col lg={6}>
               <FadeIn>
                 <div className="about-image-container">
@@ -114,7 +114,7 @@ function AboutPage() {
       </section>
 
       {/* Estadísticas */}
-      <section className="py-5 bg-dark text-white">
+      <section className="py-4 bg-dark text-white">
         <Container>
           <Row className="g-4">
             {stats.map((stat, index) => (
@@ -135,7 +135,7 @@ function AboutPage() {
       </section>
 
       {/* Misión y Visión */}
-      <section className="py-5">
+      <section className="py-4">
         <Container>
           <Row className="g-4">
             <Col lg={6}>
@@ -179,9 +179,9 @@ function AboutPage() {
       </section>
 
       {/* Por qué elegirnos */}
-      <section className="py-5 bg-light">
+      <section className="py-4 bg-light">
         <Container>
-          <div className="text-center mb-5">
+          <div className="text-center mb-4">
             <FadeIn>
               <h2 className="section-title mb-3">¿Por Qué Trabajar Conmigo?</h2>
               <p className="text-muted">
@@ -210,7 +210,7 @@ function AboutPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-5 about-cta">
+      <section className="py-4 about-cta">
         <Container>
           <Row className="justify-content-center">
             <Col lg={8} className="text-center text-white">
