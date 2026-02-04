@@ -54,20 +54,21 @@ function AboutPage() {
       </section>
 
       {/* Sobre Carolina */}
-      <section className="py-3 bg-light">
+      <section className="py-2 bg-light">
         <Container>
           <Row className="align-items-center g-3">
-            <Col lg={5}>
+            <Col lg={4}>
               <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=600&fit=crop"
+                src="https://firebasestorage.googleapis.com/v0/b/carolucero-rah.firebasestorage.app/o/Caro%20foto%20nosotros.jpeg?alt=media"
                 alt="Carolina Lucero"
                 className="img-fluid rounded shadow-sm"
+                style={{maxWidth: '350px'}}
               />
             </Col>
-            <Col lg={7}>
-              <h2 className="fw-bold mb-2">Carolina Lucero</h2>
-              <p className="text-primary fw-semibold mb-3">Asesora Inmobiliaria Certificada RAH</p>
-              <p className="text-muted mb-3">
+            <Col lg={8}>
+              <h2 className="fw-bold mb-1">Carolina Lucero</h2>
+              <p className="text-primary fw-semibold mb-2">Asesora Inmobiliaria Certificada RAH</p>
+              <p className="text-muted mb-2">
                 Más de 10 años ayudando a familias a encontrar su hogar ideal 
                 con el respaldo de RentaHouse, la red inmobiliaria líder en Venezuela.
               </p>
