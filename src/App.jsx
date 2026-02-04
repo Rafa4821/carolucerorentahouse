@@ -6,6 +6,8 @@ import PropertiesPage from './features/properties/pages/PropertiesPage'
 import PropertyDetailPage from './features/properties/pages/PropertyDetailPage'
 import BlogPage from './features/blog/pages/BlogPage'
 import BlogPostPage from './features/blog/pages/BlogPostPage'
+import AboutPage from './features/about/pages/AboutPage'
+import ContactPage from './features/contact/pages/ContactPage'
 import LoginPage from './features/auth/pages/LoginPage'
 import BackofficeLayout from './features/backoffice/layouts/BackofficeLayout'
 import DashboardPage from './features/backoffice/pages/DashboardPage'
@@ -22,6 +24,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/propiedades" element={<PropertiesPage />} />
           <Route path="/propiedades/:id" element={<PropertyDetailPage />} />
+          <Route path="/nosotros" element={<AboutPage />} />
+          <Route path="/contacto" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/login" element={<LoginPage />} />

@@ -32,6 +32,7 @@ function Footer() {
               <li><Link to="/propiedades">Propiedades</Link></li>
               <li><Link to="/conoce-tu-m2">Conoce tu M²</Link></li>
               <li><Link to="/blog">Blog</Link></li>
+              <li><Link to="/nosotros">Nosotros</Link></li>
               <li><Link to="/contacto">Contacto</Link></li>
             </ul>
           </Col>

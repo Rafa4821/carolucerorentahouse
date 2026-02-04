@@ -75,6 +75,15 @@ function Header() {
 
             <Nav.Link 
               as={NavLink} 
+              to="/nosotros" 
+              className="nav-link-custom"
+              onClick={() => setExpanded(false)}
+            >
+              Nosotros
+            </Nav.Link>
+
+            <Nav.Link 
+              as={NavLink} 
               to="/contacto" 
               className="nav-link-custom"
               onClick={() => setExpanded(false)}

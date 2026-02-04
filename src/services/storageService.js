@@ -48,11 +48,36 @@ export const storageService = {
 
   async deleteImage(imageUrl) {
     try {
-      const imageRef = ref(storage, imageUrl)
-      await deleteObject(imageRef)
+      // Si es una URL completa de Firebase Storage, extraer el path
+      if (imageUrl.includes('firebase')) {
+        const url = new URL(imageUrl)
+        const pathStart = url.pathname.indexOf('/o/') + 3
+        const pathEnd = url.pathname.indexOf('?')
+        const fullPath = decodeURIComponent(
+          pathEnd > 0 ? url.pathname.substring(pathStart, pathEnd) : url.pathname.substring(pathStart)
+        )
+        const imageRef = ref(storage, fullPath)
+        await deleteObject(imageRef)
+      } else {
+        // Si es un path directo
+        const imageRef = ref(storage, imageUrl)
+        await deleteObject(imageRef)
+      }
     } catch (error) {
-      console.error('Error deleting image:', error)
-      throw error
+      // No lanzar error si la imagen no existe
+      if (error.code !== 'storage/object-not-found') {
+        console.error('Error deleting image:', error)
+      }
+    }
+  },
+
+  async deleteMultipleImages(imageUrls) {
+    try {
+      const deletePromises = imageUrls.map(url => this.deleteImage(url))
+      await Promise.all(deletePromises)
+    } catch (error) {
+      console.error('Error deleting multiple images:', error)
+      // No lanzar error para no interrumpir la eliminación del documento
     }
   }
 }

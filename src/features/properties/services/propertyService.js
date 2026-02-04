@@ -13,6 +13,7 @@ import {
   Timestamp 
 } from 'firebase/firestore'
 import { db } from '../../../services/firebase'
+import { storageService } from '../../../services/storageService'
 
 const COLLECTION_NAME = 'properties'
 
@@ -156,6 +157,15 @@ export const propertyService = {
 
   async delete(id) {
     try {
+      // Primero obtener la propiedad para acceder a sus imágenes
+      const property = await this.getById(id)
+      
+      // Eliminar todas las imágenes del Storage si existen
+      if (property && property.images && property.images.length > 0) {
+        await storageService.deleteMultipleImages(property.images)
+      }
+      
+      // Luego eliminar el documento de Firestore
       const docRef = doc(db, COLLECTION_NAME, id)
       await deleteDoc(docRef)
     } catch (error) {

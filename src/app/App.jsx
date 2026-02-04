@@ -7,6 +7,7 @@ import PropertyDetailPage from '../features/properties/pages/PropertyDetailPage'
 import BlogPage from '../features/blog/pages/BlogPage'
 import BlogPostPage from '../features/blog/pages/BlogPostPage'
 import ContactPage from '../features/contact/pages/ContactPage'
+import AboutPage from '../features/about/pages/AboutPage'
 import KnowYourM2Page from '../features/zones/pages/KnowYourM2Page'
 import LoginPage from '../features/auth/pages/LoginPage'
 import AdminLayout from '../features/admin/layouts/AdminLayout'
@@ -30,6 +31,7 @@ function App() {
           <Route path="/conoce-tu-m2" element={<KnowYourM2Page />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/nosotros" element={<AboutPage />} />
           <Route path="/contacto" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>

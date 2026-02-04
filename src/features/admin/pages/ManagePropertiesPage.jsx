@@ -154,12 +154,30 @@ function ManagePropertiesPage() {
     }
   }
 
-  const handleRemoveImage = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }))
-    setImagePreviews(prev => prev.filter((_, i) => i !== index))
+  const handleRemoveImage = async (index) => {
+    try {
+      const imageUrl = formData.images[index]
+      
+      // Si la imagen ya estaba en Firebase (tiene URL completa), eliminarla del Storage
+      if (imageUrl && imageUrl.includes('firebase')) {
+        await storageService.deleteImage(imageUrl)
+      }
+      
+      // Eliminar del estado
+      setFormData(prev => ({
+        ...prev,
+        images: prev.images.filter((_, i) => i !== index)
+      }))
+      setImagePreviews(prev => prev.filter((_, i) => i !== index))
+    } catch (error) {
+      console.error('Error al eliminar imagen:', error)
+      // Continuar eliminando del estado aunque falle la eliminación del Storage
+      setFormData(prev => ({
+        ...prev,
+        images: prev.images.filter((_, i) => i !== index)
+      }))
+      setImagePreviews(prev => prev.filter((_, i) => i !== index))
+    }
   }
 
   // Drag and drop para reordenar imágenes

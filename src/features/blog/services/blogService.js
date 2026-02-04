@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '../../../services/firebase'
 import { slugify } from '../../../utils/formatters'
+import { storageService } from '../../../services/storageService'
 
 const COLLECTION_NAME = 'blogPosts'
 
@@ -156,6 +157,15 @@ export const blogService = {
 
   async delete(id) {
     try {
+      // Primero obtener el post para acceder a su imagen
+      const post = await this.getById(id)
+      
+      // Eliminar la imagen del Storage si existe
+      if (post && post.image) {
+        await storageService.deleteImage(post.image)
+      }
+      
+      // Luego eliminar el documento de Firestore
       const docRef = doc(db, COLLECTION_NAME, id)
       await deleteDoc(docRef)
     } catch (error) {

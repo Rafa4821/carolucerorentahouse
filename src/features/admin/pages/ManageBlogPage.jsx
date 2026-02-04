@@ -92,6 +92,12 @@ function ManageBlogPage() {
 
     try {
       setUploadingImage(true)
+      
+      // Si ya había una imagen anterior, eliminarla del Storage
+      if (formData.coverImage && formData.coverImage.includes('firebase')) {
+        await storageService.deleteImage(formData.coverImage)
+      }
+      
       const url = await storageService.uploadImage(file, 'blog')
       setFormData(prev => ({
         ...prev,
@@ -102,6 +108,28 @@ function ManageBlogPage() {
       console.error(err)
     } finally {
       setUploadingImage(false)
+    }
+  }
+
+  const handleRemoveCoverImage = async () => {
+    try {
+      // Si la imagen está en Firebase, eliminarla del Storage
+      if (formData.coverImage && formData.coverImage.includes('firebase')) {
+        await storageService.deleteImage(formData.coverImage)
+      }
+      
+      // Limpiar del estado
+      setFormData(prev => ({
+        ...prev,
+        coverImage: ''
+      }))
+    } catch (error) {
+      console.error('Error al eliminar imagen:', error)
+      // Continuar limpiando del estado aunque falle la eliminación del Storage
+      setFormData(prev => ({
+        ...prev,
+        coverImage: ''
+      }))
     }
   }
 
@@ -443,13 +471,22 @@ function ManageBlogPage() {
                     </Form.Text>
                   </Form.Group>
                   {formData.coverImage && (
-                    <div className="mt-2">
+                    <div className="mt-2 position-relative" style={{ display: 'inline-block' }}>
                       <img 
                         src={formData.coverImage} 
                         alt="Preview"
                         style={{ maxWidth: '300px', height: 'auto' }}
                         className="rounded"
                       />
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        className="position-absolute top-0 end-0 m-1"
+                        onClick={handleRemoveCoverImage}
+                        title="Eliminar imagen"
+                      >
+                        <FiX size={16} />
+                      </Button>
                     </div>
                   )}
                 </Col>
