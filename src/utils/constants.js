@@ -1,6 +1,6 @@
 export const PROPERTY_TYPES = {
   CASA: 'Casa',
-  DEPARTAMENTO: 'Departamento',
+  APARTAMENTO: 'Apartamento',
   OFICINA: 'Oficina',
   LOCAL: 'Local Comercial',
   TERRENO: 'Terreno',

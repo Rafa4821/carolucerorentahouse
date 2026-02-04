@@ -1,10 +1,45 @@
 .admin-layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-gray-lightest);
 }
 
 .admin-content {
+  flex: 1;
   min-height: calc(100vh - 73px);
+  background-color: #f8f9fa;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: rgba(33, 37, 41, 0.98);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+  }
+  
+  .navbar-collapse .nav-link {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .navbar-collapse .nav-link:last-of-type {
+    border-bottom: none;
+  }
+  
+  .admin-content .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-content .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 }
 
 .navbar-dark .nav-link {

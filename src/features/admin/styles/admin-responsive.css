@@ -1,0 +1,100 @@
+/* Estilos responsive para tablas del panel admin */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* En móvil, ocultar algunas columnas menos importantes */
+@media (max-width: 768px) {
+  .admin-table-actions {
+    min-width: 120px;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    white-space: nowrap;
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+  
+  /* Hacer botones más compactos en móvil */
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Badges más pequeños */
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.4rem;
+  }
+}
+
+/* Formularios responsive */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+    margin: 0 !important;
+  }
+  
+  /* Imágenes en formularios más pequeñas en móvil */
+  .image-preview-container {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+
+/* Ajustes para Alert de selección masiva */
+@media (max-width: 768px) {
+  .alert {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  
+  .alert .d-flex {
+    flex-direction: column !important;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  
+  .alert .btn {
+    width: 100%;
+  }
+}
+
+/* Cards responsive */
+@media (max-width: 576px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  h1, .h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2, .h2 {
+    font-size: 1.3rem;
+  }
+  
+  h4, .h4 {
+    font-size: 1.1rem;
+  }
+}

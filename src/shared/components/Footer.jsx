@@ -25,7 +25,7 @@ function Footer() {
             </div>
           </Col>
 
-          <Col lg={3} md={6}>
+          <Col lg={4} md={6}>
             <h5 className="fw-bold mb-3">Navegación</h5>
             <ul className="list-unstyled footer-links">
               <li><Link to="/">Inicio</Link></li>
@@ -36,17 +36,7 @@ function Footer() {
             </ul>
           </Col>
 
-          <Col lg={2} md={6}>
-            <h5 className="fw-bold mb-3">Servicios</h5>
-            <ul className="list-unstyled footer-links">
-              <li><Link to="/propiedades?operation=VENTA">Venta</Link></li>
-              <li><Link to="/propiedades?operation=ARRIENDO">Alquiler</Link></li>
-              <li><Link to="/conoce-tu-m2">Tasaciones</Link></li>
-              <li><Link to="/contacto">Asesoría</Link></li>
-            </ul>
-          </Col>
-
-          <Col lg={3} md={6}>
+          <Col lg={4} md={6}>
             <h5 className="fw-bold mb-3">Contacto</h5>
             <ul className="list-unstyled footer-contact">
               <li>

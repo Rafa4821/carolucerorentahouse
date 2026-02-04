@@ -1,7 +1,8 @@
 import { Container, Row, Col, Card, Badge, Button, ListGroup } from 'react-bootstrap'
 import { useParams, Link } from 'react-router-dom'
 import SEO from '../../../layout/components/SEO'
-import { FiHome, FiDroplet, FiMaximize2, FiMapPin, FiPhone, FiMail, FiArrowLeft, FiShare2 } from 'react-icons/fi'
+import { FiHome, FiDroplet, FiMaximize2, FiMapPin, FiPhone, FiMail, FiArrowLeft, FiShare2, FiCalendar, FiCheckCircle } from 'react-icons/fi'
+import { FaCar } from 'react-icons/fa'
 import { FaWhatsapp } from 'react-icons/fa'
 import { useProperty } from '../hooks/useProperties'
 import PropertyGallery from '../components/PropertyGallery'
@@ -14,6 +15,16 @@ import './PropertyDetailPage.css'
 function PropertyDetailPage() {
   const { id } = useParams()
   const { property, loading, error } = useProperty(id)
+  
+  // Calcular antigüedad del inmueble
+  const calculatePropertyAge = (yearBuilt) => {
+    if (!yearBuilt) return null
+    const currentYear = new Date().getFullYear()
+    const age = currentYear - yearBuilt
+    if (age === 0) return 'Nuevo'
+    if (age === 1) return '1 año'
+    return `${age} años`
+  }
 
   if (loading) {
     return (
@@ -114,6 +125,13 @@ function PropertyDetailPage() {
                         <span className="feature-label">Baños</span>
                       </div>
                     )}
+                    {property.parkingSpaces > 0 && (
+                      <div className="feature-box">
+                        <FaCar size={24} />
+                        <span className="feature-value">{property.parkingSpaces}</span>
+                        <span className="feature-label">Estacionamiento</span>
+                      </div>
+                    )}
                     {property.m2 && (
                       <div className="feature-box">
                         <FiMaximize2 size={24} />
@@ -121,14 +139,47 @@ function PropertyDetailPage() {
                         <span className="feature-label">m² Totales</span>
                       </div>
                     )}
+                    {property.yearBuilt && (
+                      <div className="feature-box">
+                        <FiCalendar size={24} />
+                        <span className="feature-value">{calculatePropertyAge(property.yearBuilt)}</span>
+                        <span className="feature-label">Antigüedad</span>
+                      </div>
+                    )}
                   </div>
 
                   <hr />
+
+                  {property.features && property.features.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="mb-3">Características</h4>
+                      <Row className="g-2">
+                        {property.features.map((feature, index) => (
+                          <Col xs={6} md={4} key={index}>
+                            <div className="d-flex align-items-center">
+                              <FiCheckCircle className="text-success me-2" size={16} />
+                              <span className="small">{feature}</span>
+                            </div>
+                          </Col>
+                        ))}
+                      </Row>
+                    </div>
+                  )}
+
+                  {property.features && property.features.length > 0 && <hr />}
 
                   <div className="mt-4">
                     <h4 className="mb-3">Descripción</h4>
                     <p className="property-description">{property.description}</p>
                   </div>
+
+                  {property.yearBuilt && (
+                    <div className="mt-3">
+                      <p className="text-muted mb-0">
+                        <strong>Año de construcción:</strong> {property.yearBuilt}
+                      </p>
+                    </div>
+                  )}
 
                   {property.observations && (
                     <div className="mt-4">

@@ -1,6 +1,6 @@
 import { Card, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { FiHome, FiDroplet, FiMapPin, FiMaximize2 } from 'react-icons/fi'
+import { FiHome, FiDroplet, FiMapPin, FiMaximize2, FiCalendar } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 import { formatPrice, formatArea } from '../../../utils/formatters'
 import { PROPERTY_TYPES, OPERATION_TYPES } from '../../../utils/constants'
@@ -8,6 +8,18 @@ import './PropertyCard.css'
 
 function PropertyCard({ property }) {
   const mainImage = property.images?.[0] || '/placeholder-property.jpg'
+  
+  // Calcular antigüedad del inmueble
+  const calculatePropertyAge = (yearBuilt) => {
+    if (!yearBuilt) return null
+    const currentYear = new Date().getFullYear()
+    const age = currentYear - yearBuilt
+    if (age === 0) return 'Nuevo'
+    if (age === 1) return '1 año'
+    return `${age} años`
+  }
+  
+  const propertyAge = calculatePropertyAge(property.yearBuilt)
 
   return (
     <motion.div
@@ -68,6 +80,12 @@ function PropertyCard({ property }) {
                 <div className="feature-item">
                   <FiMaximize2 size={18} />
                   <span>{formatArea(property.m2)}</span>
+                </div>
+              )}
+              {propertyAge && (
+                <div className="feature-item">
+                  <FiCalendar size={18} />
+                  <span>{propertyAge}</span>
                 </div>
               )}
             </div>

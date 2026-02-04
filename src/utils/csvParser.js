@@ -68,7 +68,8 @@ export const validatePropertyCSV = (data) => {
 const normalizePropertyType = (type) => {
   const typeMap = {
     'casa': 'CASA',
-    'departamento': 'DEPARTAMENTO',
+    'apartamento': 'APARTAMENTO',
+    'departamento': 'APARTAMENTO', // Mantener compatibilidad
     'oficina': 'OFICINA',
     'local comercial': 'LOCAL',
     'local': 'LOCAL',

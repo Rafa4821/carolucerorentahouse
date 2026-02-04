@@ -162,6 +162,35 @@ function ManagePropertiesPage() {
     setImagePreviews(prev => prev.filter((_, i) => i !== index))
   }
 
+  // Drag and drop para reordenar imágenes
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/html', index)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDrop = (e, dropIndex) => {
+    e.preventDefault()
+    const dragIndex = parseInt(e.dataTransfer.getData('text/html'))
+    
+    if (dragIndex === dropIndex) return
+
+    const newImages = [...formData.images]
+    const draggedImage = newImages[dragIndex]
+    newImages.splice(dragIndex, 1)
+    newImages.splice(dropIndex, 0, draggedImage)
+
+    setFormData(prev => ({
+      ...prev,
+      images: newImages
+    }))
+    setImagePreviews(newImages)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     
@@ -691,22 +720,65 @@ function ManagePropertiesPage() {
 
                 {imagePreviews.length > 0 && (
                   <Col md={12}>
+                    <div className="mb-2">
+                      <small className="text-muted">
+                        <strong>Tip:</strong> Arrastra las imágenes para cambiar el orden. La primera imagen será la portada.
+                      </small>
+                    </div>
                     <div className="d-flex gap-2 flex-wrap">
                       {imagePreviews.map((url, index) => (
-                        <div key={index} className="position-relative" style={{ width: '100px', height: '100px' }}>
+                        <div 
+                          key={index} 
+                          className="position-relative" 
+                          style={{ 
+                            width: '120px', 
+                            height: '120px',
+                            cursor: 'move',
+                            border: index === 0 ? '3px solid var(--color-primary)' : '2px solid transparent',
+                            borderRadius: '8px',
+                            transition: 'all 0.2s'
+                          }}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={handleDragOver}
+                          onDrop={(e) => handleDrop(e, index)}
+                        >
+                          {index === 0 && (
+                            <Badge 
+                              bg="danger" 
+                              className="position-absolute top-0 start-0 m-1"
+                              style={{ zIndex: 2 }}
+                            >
+                              Portada
+                            </Badge>
+                          )}
                           <img 
                             src={url} 
                             alt={`Preview ${index + 1}`}
                             className="w-100 h-100 object-fit-cover rounded"
+                            style={{ pointerEvents: 'none' }}
                           />
                           <Button
                             variant="danger"
                             size="sm"
                             className="position-absolute top-0 end-0 m-1"
+                            style={{ zIndex: 2 }}
                             onClick={() => handleRemoveImage(index)}
                           >
                             <FiX size={12} />
                           </Button>
+                          <div 
+                            className="position-absolute bottom-0 start-0 w-100 text-center py-1"
+                            style={{ 
+                              background: 'rgba(0,0,0,0.7)', 
+                              color: 'white',
+                              fontSize: '11px',
+                              borderBottomLeftRadius: '6px',
+                              borderBottomRightRadius: '6px'
+                            }}
+                          >
+                            Imagen {index + 1}
+                          </div>
                         </div>
                       ))}
                     </div>

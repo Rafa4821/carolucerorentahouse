@@ -272,7 +272,7 @@ function KnowYourM2Page() {
                               >
                                 <option value="">Selecciona...</option>
                                 <option value="casa">Casa</option>
-                                <option value="departamento">Departamento</option>
+                                <option value="apartamento">Apartamento</option>
                                 <option value="oficina">Oficina</option>
                                 <option value="local">Local Comercial</option>
                                 <option value="terreno">Terreno</option>
